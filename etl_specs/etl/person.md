@@ -19,7 +19,7 @@
 | care_site_id |  |  |  |
 | person_source_value |  |  |  |
 | gender_source_value | gender |  |  |
-| gender_source_concept_id | gender | 0 |  |
+| gender_source_concept_id | gender | 0 | There is no source concept Id that is available to represent gender in the source vocabulary |
 | race_source_value |  |  |  |
 | race_source_concept_id |  |  |  |
 | ethnicity_source_value |  |  |  |
@@ -38,7 +38,7 @@
 | day_of_birth |  |  |  |
 | birth_datetime |  |  |  |
 | race_concept_id |  |  |  |
-| ethnicity_concept_id | ethnicity |  |  |
+| ethnicity_concept_id | ethnicity | Hispanic = 38003563 | `SOURCE_TO_STANDARD.sql` |
 | location_id |  |  |  |
 | provider_id |  |  |  |
 | care_site_id |  |  |  |
@@ -48,5 +48,5 @@
 | race_source_value |  |  |  |
 | race_source_concept_id |  |  |  |
 | ethnicity_source_value | ethnicity |  |  |
-| ethnicity_source_concept_id | ethnicity | 0 |  |
+| ethnicity_source_concept_id | ethnicity | 0 | There is no source vocabulary available to map ethnicity values to a source concept ID hence needs to be assigned as 0 |
 

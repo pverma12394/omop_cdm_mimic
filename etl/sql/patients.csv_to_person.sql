@@ -58,7 +58,8 @@ SELECT
 
     patients.csv.gender AS gender_source_value,
 
- -- [MAPPING   LOGIC] 0 
+ -- [MAPPING   LOGIC] 0
+ -- [MAPPING COMMENT] There is no source concept Id that is available to represent gender in the source vocabulary
     patients.csv.gender AS gender_source_concept_id,
 
  -- [!WARNING!] no source column found. See possible comment at the INSERT INTO

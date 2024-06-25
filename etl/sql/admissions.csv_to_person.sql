@@ -41,6 +41,8 @@ SELECT
  -- [!WARNING!] no source column found. See possible comment at the INSERT INTO
     NULL AS race_concept_id,
 
+-- [MAPPING   LOGIC] Hispanic = 38003563
+-- [MAPPING COMMENT] SOURCE_TO_STANDARD.sql
     admissions.csv.ethnicity AS ethnicity_concept_id,
 
  -- [!WARNING!] no source column found. See possible comment at the INSERT INTO
@@ -69,7 +71,8 @@ SELECT
 
     admissions.csv.ethnicity AS ethnicity_source_value,
 
- -- [MAPPING   LOGIC] 0 
+ -- [MAPPING   LOGIC] 0
+ -- [MAPPING COMMENT] There is no source vocabulary available to map ethnicity values to a source concept ID hence needs to be assigned as 0
     admissions.csv.ethnicity AS ethnicity_source_concept_id
 
 FROM admissions.csv

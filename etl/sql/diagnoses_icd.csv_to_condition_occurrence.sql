@@ -23,6 +23,8 @@ SELECT
 
     diagnoses_icd.csv.subject_id AS person_id,
 
+-- [MAPPING LOGIC] SOURCE_TO_STANDARD.sql
+-- [MAPPING COMMENTS] Map source id to standard concept id. Target vocab = 'SNOMED'
     diagnoses_icd.csv.icd_code AS condition_concept_id,
 
  -- [!WARNING!] no source column found. See possible comment at the INSERT INTO
@@ -54,11 +56,12 @@ SELECT
 
     diagnoses_icd.csv.hadm_id AS visit_detail_id,
 
- -- [!WARNING!] no source column found. See possible comment at the INSERT INTO
-    NULL AS condition_source_value,
+-- [MAPPING COMMENT] Get mapped value to source concept ID 
+    diagnoses_icd.csv.icd_code AS condition_source_value,
 
- -- [!WARNING!] no source column found. See possible comment at the INSERT INTO
-    NULL AS condition_source_concept_id,
+ -- [MAPPING   LOGIC] SOURCE_TO_SOURCE.sql 
+ -- [MAPPING COMMENT] Map source id to source concept id
+    diagnoses_icd.csv.icd_code AS condition_source_concept_id,
 
  -- [!WARNING!] no source column found. See possible comment at the INSERT INTO
     NULL AS condition_status_source_value
