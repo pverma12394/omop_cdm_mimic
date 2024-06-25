@@ -36,7 +36,6 @@ SELECT
  -- [MAPPING   LOGIC] DATETIME to DATE 
     admissions.csv.dischtime AS visit_detail_end_date,
 
- -- [MAPPING   LOGIC] DA 
     admissions.csv.dischtime AS visit_detail_end_datetime,
 
  -- [!WARNING!] no source column found. See possible comment at the INSERT INTO
