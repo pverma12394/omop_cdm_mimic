@@ -2,7 +2,7 @@
 
 ### Reading from icustays.csv
 
-![](md_files/image9.png)
+![](md_files/image8.png)
 
 | Destination Field | Source field | Logic | Comment field |
 | --- | --- | --- | --- |

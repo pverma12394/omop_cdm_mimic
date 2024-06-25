@@ -54,11 +54,3 @@
 | icd_code | VARCHAR | 4019 |  |
 | icd_version | INT | 9 |  |
 
-### Table: d_icd_diagnoses.csv
-
-| Field | Type | Most freq. value | Comment |
-| --- | --- | --- | --- |
-| icd_code | VARCHAR |  |  |
-| icd_version | INT | 10 |  |
-| long_title | VARCHAR |  |  |
-

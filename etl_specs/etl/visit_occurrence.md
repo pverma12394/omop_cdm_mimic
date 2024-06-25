@@ -9,9 +9,9 @@
 | visit_occurrence_id |  |  |  |
 | person_id | subject_id |  |  |
 | visit_concept_id |  |  |  |
-| visit_start_date |  |  |  |
+| visit_start_date | intime | DATETIME to DATE |  |
 | visit_start_datetime | intime |  |  |
-| visit_end_date |  |  |  |
+| visit_end_date | outtime | DATETIME to DATE |  |
 | visit_end_datetime | outtime |  |  |
 | visit_type_concept_id |  |  |  |
 | provider_id |  |  |  |

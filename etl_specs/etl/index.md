@@ -1,6 +1,6 @@
 # Source Data Mapping Approach to CDMV5.4
 
-![](md_files/image10.png)
+![](md_files/image9.png)
 
 ## Contents
 
