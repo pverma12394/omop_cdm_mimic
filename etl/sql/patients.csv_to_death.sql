@@ -1,5 +1,6 @@
+truncate ohdsi_demo.death;
 
-INSERT INTO death
+INSERT INTO ohdsi_demo.death
 (
     person_id,
     death_date,
@@ -10,24 +11,16 @@ INSERT INTO death
     cause_source_concept_id
 )
 SELECT
-    patients.csv.subject_id AS person_id,
+    p.subject_id AS person_id,
 
  -- [MAPPING   LOGIC] DATETIME to DATE 
-    patients.csv.dod AS death_date,
+    date(p.dod) AS death_date,
+    p.dod AS death_datetime,
 
-    patients.csv.dod AS death_datetime,
-
- -- [!WARNING!] no source column found. See possible comment at the INSERT INTO
     NULL AS death_type_concept_id,
-
- -- [!WARNING!] no source column found. See possible comment at the INSERT INTO
     NULL AS cause_concept_id,
-
- -- [!WARNING!] no source column found. See possible comment at the INSERT INTO
     NULL AS cause_source_value,
-
- -- [!WARNING!] no source column found. See possible comment at the INSERT INTO
     NULL AS cause_source_concept_id
 
-FROM patients.csv
+FROM mimic_source.patients p
 ;
