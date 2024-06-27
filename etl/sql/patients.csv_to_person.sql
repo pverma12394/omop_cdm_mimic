@@ -1,4 +1,4 @@
-truncate ohdsi_demo.person;
+-- Database: ohdsi
 
 INSERT INTO ohdsi_demo.person
 (
@@ -29,7 +29,7 @@ SELECT
     case upper(p.gender)
       when 'M' then 8507
       when 'F' then 8532
-    end as gender_concept_id
+    end as gender_concept_id,
 
     p.anchor_year AS year_of_birth,
 
