@@ -1,5 +1,3 @@
-truncate ohdsi_demo.death;
-
 INSERT INTO ohdsi_demo.death
 (
     person_id,

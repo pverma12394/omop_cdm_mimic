@@ -1,79 +1,27 @@
+UPDATE ohdsi_demo.person p
+SET
+    ethnicity_concept_id = CASE
+        WHEN upper(a.ethnicity) = 'HISPANIC/LATINO' THEN 38003563 ELSE 0
+    END,
+    ethnicity_source_value = a.ethnicity,
+    ethnicity_source_concept_id = 0
+FROM mimic_source.admissions a
+WHERE p.person_id = a.subject_id;
 
-INSERT INTO person
-(
-    person_id,
-    gender_concept_id,
-    year_of_birth,
-    month_of_birth,
-    day_of_birth,
-    birth_datetime,
-    race_concept_id,
+INSERT INTO ohdsi_demo.person
+(	
+	person_id,
     ethnicity_concept_id,
-    location_id,
-    provider_id,
-    care_site_id,
-    person_source_value,
-    gender_source_value,
-    gender_source_concept_id,
-    race_source_value,
-    race_source_concept_id,
-    ethnicity_source_value,
+	ethnicity_source_value,
     ethnicity_source_concept_id
 )
 SELECT
-    admissions.csv.subject_id AS person_id,
-
- -- [!WARNING!] no source column found. See possible comment at the INSERT INTO
-    NULL AS gender_concept_id,
-
- -- [!WARNING!] no source column found. See possible comment at the INSERT INTO
-    NULL AS year_of_birth,
-
- -- [!WARNING!] no source column found. See possible comment at the INSERT INTO
-    NULL AS month_of_birth,
-
- -- [!WARNING!] no source column found. See possible comment at the INSERT INTO
-    NULL AS day_of_birth,
-
- -- [!WARNING!] no source column found. See possible comment at the INSERT INTO
-    NULL AS birth_datetime,
-
- -- [!WARNING!] no source column found. See possible comment at the INSERT INTO
-    NULL AS race_concept_id,
-
--- [MAPPING   LOGIC] Hispanic = 38003563
--- [MAPPING COMMENT] SOURCE_TO_STANDARD.sql
-    admissions.csv.ethnicity AS ethnicity_concept_id,
-
- -- [!WARNING!] no source column found. See possible comment at the INSERT INTO
-    NULL AS location_id,
-
- -- [!WARNING!] no source column found. See possible comment at the INSERT INTO
-    NULL AS provider_id,
-
- -- [!WARNING!] no source column found. See possible comment at the INSERT INTO
-    NULL AS care_site_id,
-
- -- [!WARNING!] no source column found. See possible comment at the INSERT INTO
-    NULL AS person_source_value,
-
- -- [!WARNING!] no source column found. See possible comment at the INSERT INTO
-    NULL AS gender_source_value,
-
- -- [!WARNING!] no source column found. See possible comment at the INSERT INTO
-    NULL AS gender_source_concept_id,
-
- -- [!WARNING!] no source column found. See possible comment at the INSERT INTO
-    NULL AS race_source_value,
-
- -- [!WARNING!] no source column found. See possible comment at the INSERT INTO
-    NULL AS race_source_concept_id,
-
-    admissions.csv.ethnicity AS ethnicity_source_value,
-
- -- [MAPPING   LOGIC] 0
- -- [MAPPING COMMENT] There is no source vocabulary available to map ethnicity values to a source concept ID hence needs to be assigned as 0
-    admissions.csv.ethnicity AS ethnicity_source_concept_id
-
-FROM admissions.csv
-;
+	a.subject_id AS person_id,
+    CASE
+		WHEN upper(a.ethnicity) = 'HISPANIC/LATINO' THEN 38003563 ELSE 0
+	END AS ethnicity_concept_id,
+    a.ethnicity AS ethnicity_source_value,
+    0 AS ethnicity_source_concept_id
+FROM mimic_source.admissions a
+LEFT JOIN ohdsi_demo.person p ON a.subject_id = p.person_id
+WHERE p.person_id IS NULL;
