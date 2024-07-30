@@ -1,5 +1,5 @@
 
-INSERT INTO visit_occurrence
+INSERT INTO ohdsi_demo.visit_occurrence
 (
     visit_occurrence_id,
     person_id,
@@ -20,52 +20,24 @@ INSERT INTO visit_occurrence
     preceding_visit_occurrence_id
 )
 SELECT
- -- [!WARNING!] no source column found. See possible comment at the INSERT INTO
     NULL AS visit_occurrence_id,
 
-    icustays.csv.subject_id AS person_id,
-
- -- [!WARNING!] no source column found. See possible comment at the INSERT INTO
+    icustays.subject_id AS person_id,
     NULL AS visit_concept_id,
-
- -- [MAPPING   LOGIC] DATETIME to DATE 
-    icustays.csv.intime AS visit_start_date,
-
-    icustays.csv.intime AS visit_start_datetime,
-
- -- [MAPPING   LOGIC] DATETIME to DATE 
-    icustays.csv.outtime AS visit_end_date,
-
-    icustays.csv.outtime AS visit_end_datetime,
-
- -- [!WARNING!] no source column found. See possible comment at the INSERT INTO
+    date(icustays.intime) AS visit_start_date,
+    icustays.intime AS visit_start_datetime,
+    date(icustays.outtime) AS visit_end_date,
+    icustays.outtime AS visit_end_datetime,
     NULL AS visit_type_concept_id,
-
- -- [!WARNING!] no source column found. See possible comment at the INSERT INTO
     NULL AS provider_id,
-
-    icustays.csv.stay_id AS care_site_id,
-
- -- [!WARNING!] no source column found. See possible comment at the INSERT INTO
+    icustays.stay_id AS care_site_id,
     NULL AS visit_source_value,
-
- -- [!WARNING!] no source column found. See possible comment at the INSERT INTO
     NULL AS visit_source_concept_id,
-
- -- [!WARNING!] no source column found. See possible comment at the INSERT INTO
     NULL AS admitted_from_concept_id,
-
- -- [!WARNING!] no source column found. See possible comment at the INSERT INTO
     NULL AS admitted_from_source_value,
-
- -- [!WARNING!] no source column found. See possible comment at the INSERT INTO
     NULL AS discharged_to_concept_id,
-
- -- [!WARNING!] no source column found. See possible comment at the INSERT INTO
     NULL AS discharged_to_source_value,
-
- -- [!WARNING!] no source column found. See possible comment at the INSERT INTO
     NULL AS preceding_visit_occurrence_id
 
-FROM icustays.csv
+FROM mimic_source.icustays
 ;

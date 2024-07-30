@@ -23,16 +23,11 @@ INSERT INTO ohdsi_demo.person
 )
 SELECT
     p.subject_id AS person_id,
-
- -- [MAPPING   LOGIC] M = 8507 F = 8532 
- -- [MAPPING COMMENT] Since there is no concept ID for M and F which basically refers to MALE and FEMALE in the vocabulary, we will pass instructions to the developers to refer to the aforementioned concept ids to map MALE and FEMALE subjects 
     case upper(p.gender)
       when 'M' then 8507
       when 'F' then 8532
     end as gender_concept_id,
-
     p.anchor_year AS year_of_birth,
-
     NULL AS month_of_birth,
     NULL AS day_of_birth,
     NULL AS birth_datetime,
@@ -42,13 +37,8 @@ SELECT
     NULL AS provider_id,
     NULL AS care_site_id,
     NULL AS person_source_value,
-
     p.gender AS gender_source_value,
-
- -- [MAPPING   LOGIC] 0
- -- [MAPPING COMMENT] There is no source concept Id that is available to represent gender in the source vocabulary
     0 AS gender_source_concept_id,
-
     NULL AS race_source_value,
     NULL AS race_source_concept_id,
     NULL AS ethnicity_source_value,
