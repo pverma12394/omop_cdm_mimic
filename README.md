@@ -6,20 +6,20 @@ MIMIC-IV was used as the source dataset for this demonstration. The dataset is o
 
 ## High level concept mapping using OMOP-CDM
 
-![](etl_specs/etl/md_files/image9.png)
+![](whiteRabbit/specifications/md_files/image9.png)
 
 ## Mappings
 
-[person](etl_specs/etl/person.md)
+[person](whiteRabbit/specifications/person.md)
 
-[visit_occurrence](etl_specs/etl/visit_occurrence.md)
+[visit_occurrence](whiteRabbit/specifications/visit_occurrence.md)
 
-[visit_detail](etl_specs/etl/visit_detail.md)
+[visit_detail](whiteRabbit/specifications/visit_detail.md)
 
-[condition_occurrence](etl_specs/etl/condition_occurrence.md)
+[condition_occurrence](whiteRabbit/specifications/condition_occurrence.md)
 
-[death](etl_specs/etl/death.md)
+[death](whiteRabbit/specifications/death.md)
 
-[care_site](etl_specs/etl/care_site.md)
+[care_site](whiteRabbit/specifications/care_site.md)
 
-[source_appendix](etl_specs/etl/source_appendix.md)
+[source_appendix](whiteRabbit/specifications/source_appendix.md)
