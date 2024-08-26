@@ -1,0 +1,38 @@
+version: 3
+
+sources:
+  - name: omop_cdm
+    tables:
+        - name: patients
+
+models:
+  - name: person
+    description: This table serves as the central identity management for all Persons in the database. It contains records that uniquely identify each person or patient, and some demographic information. 
+
+    columns:
+    - name: person_id
+      description: It is assumed that every person with a different unique identifier is in fact a different person and should be treated independently.
+      tests:
+        - unique
+        - not_null
+
+    - name: gender_concept_id
+      description: This field is meant to capture the biological sex at birth of the Person. This field should not be used to study gender identity issues.
+
+    - name: gender_source_value
+      description: The field captures the value of a gender at source.
+    
+    - name: year_of_birth
+      description: Compute age using year_of_birth.
+
+    - name: month_of_birth
+      
+    - name: day_of_birth
+      
+    - name: birth_datetime
+
+    - name: race_concept_id
+      description: This field captures race or ethnic background of the person.
+
+    - name: ethnicity_concept_id
+      description: This field captures Ethnicity as defined by the Office of Management and Budget (OMB) of the US Government. It distinguishes only between “Hispanic” and “Not Hispanic”. Races and ethnic backgrounds are not stored here.
