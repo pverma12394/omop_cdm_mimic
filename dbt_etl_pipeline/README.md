@@ -3,7 +3,7 @@
 ## Initial Setup
 
 ### 1. Install Docker
-Follow the simple instructions show in the Docker installation depending on your OS [guide](https://docs.docker.com/engine/install/).  
+Follow the simple instructions show in the Docker installation [guide](https://docs.docker.com/engine/install/) depending on your OS.  
 
 ### 2. Set up the docker container
  1. First things first, after you have cloned the repo make sure you are in the `dbt_etl_pipeline` folder in your terminal.
