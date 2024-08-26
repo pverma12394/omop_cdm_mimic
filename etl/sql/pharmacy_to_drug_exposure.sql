@@ -1,0 +1,53 @@
+INSERT INTO ohdsi_demo.drug_exposure
+(
+    drug_exposure_id,
+    person_id,
+    drug_concept_id,
+    drug_exposure_start_date,
+    drug_exposure_start_datetime,
+    drug_exposure_end_date,
+    drug_exposure_end_datetime,
+    verbatim_end_date,
+    drug_type_concept_id,
+    stop_reason,
+    refills,
+    quantity,
+    days_supply,
+    sig,
+    route_concept_id,
+    lot_number,
+    provider_id,
+    visit_occurrence_id,
+    visit_detail_id,
+    drug_source_value,
+    drug_source_concept_id,
+    route_source_value,
+    dose_unit_source_value
+)
+SELECT
+     ROW_NUMBER() OVER () + (SELECT COALESCE(MAX(drug_exposure_id), 0) FROM ohdsi_demo.drug_exposure) AS drug_exposure_id,  
+     pharmacy.subject_id AS person_id,
+     0 AS drug_concept_id,
+     pharmacy.starttime::date AS drug_exposure_start_date,
+     pharmacy.starttime AS drug_exposure_start_datetime,
+     pharmacy.stoptime::date AS drug_exposure_end_date,
+     pharmacy.stoptime AS drug_exposure_end_datetime,
+     NULL AS verbatim_end_date,
+     0 AS drug_type_concept_id,
+     NULL AS stop_reason,
+     NULL AS refills,
+     NULL AS quantity,
+     NULL AS days_supply,
+     NULL AS sig,
+     0 AS route_concept_id,
+     NULL AS lot_number,
+     NULL AS provider_id, 
+     pharmacy.hadm_id AS visit_occurrence_id,
+     NULL AS visit_detail_id,
+     pharmacy.medication AS drug_source_value,
+     0 AS drug_source_concept_id,
+     pharmacy.route AS route_source_value,
+     NULL AS dose_unit_source_value
+
+FROM mimic_source.pharmacy;
+;
