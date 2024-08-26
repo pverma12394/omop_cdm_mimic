@@ -1,4 +1,4 @@
-.PHONY: up down run-dbt-docs add-dbt-tbls dbt-compile
+.PHONY: up down run-dbt-docs dbt-seed dbt-run dbt-compile
 
 up:
 	docker-compose --project-name dbt_etl_pipeline up -d 
@@ -6,8 +6,11 @@ up:
 down:
 	docker-compose down
 
-add-dbt-tbls:
-	docker-compose --project-name dbt_etl_pipeline run dbt build
+dbt-seed:
+	docker-compose --project-name dbt_etl_pipeline run dbt seed
+
+dbt-run:
+	docker-compose --project-name dbt_etl_pipeline run dbt run
 	
 dbt-compile:
 	docker-compose --project-name dbt_etl_pipeline run dbt compile
