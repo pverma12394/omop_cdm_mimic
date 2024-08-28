@@ -1,4 +1,4 @@
-# ETL Pipeline for mapping MIMIC-IV data to OMOP CDM v5.4 using dbt
+# ELT Pipeline for mapping MIMIC-IV data to OMOP CDM v5.4 using dbt
 
 ## Initial Setup
 
