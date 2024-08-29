@@ -25,8 +25,6 @@
 
 ### Reading from admissions.csv
 
-![](md_files/image2.png)
-
 | Destination Field | Source field | Logic | Comment field |
 | --- | --- | --- | --- |
 | person_id | subject_id |  |  |
