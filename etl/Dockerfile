@@ -44,8 +44,11 @@ ENV DBT_PROFILES_DIR=/usr/app/dbt
 COPY . /usr/app
 
 EXPOSE 3306
+EXPOSE 8000
 
 # Set work directory
 WORKDIR /usr/app
 
-CMD service mysql start && nextflow run main.nf
+CMD service mysql start && nextflow run main.nf --with-dag dbt.html
+
+
