@@ -1,0 +1,21 @@
+etl:
+  target: dev
+  outputs:
+    dev:
+      type: mysql
+      host: localhost
+      port: 3306 # optional
+      database: etl_test # optional, should be same as schema
+      schema: omop_cdm
+      username: root
+      password: password
+      driver: MySQL ODBC 8.0 ANSI Driver
+    prod:
+      type: mysql
+      host: localhost
+      port: 3306 # optional
+      database: etl_test # optional, should be same as schema
+      schema: omop_cdm
+      username: root
+      password: password
+      driver: MySQL ODBC 8.0 ANSI Driver
