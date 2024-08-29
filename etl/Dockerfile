@@ -21,13 +21,21 @@ RUN apt-get update && apt-get install -y \
 # Set timezone to avoid interactive prompt
 RUN ln -fs /usr/share/zoneinfo/Etc/UTC /etc/localtime && dpkg-reconfigure --frontend noninteractive tzdata
 
+RUN curl -s https://get.nextflow.io | bash \
+ && mv nextflow /usr/local/bin/
+
 # Install dbt and other Python dependencies
 RUN pip3 install --upgrade pip \
     && pip3 install dbt-mysql ydata-profiling
 
-# Download and install Nextflow
-RUN curl -o /usr/local/bin/nextflow -fsSL https://github.com/nextflow-io/nextflow/releases/download/v23.04.3/nextflow \
-    && chmod +x /usr/local/bin/nextflow
+# Configure MySQL root password
+ENV MYSQL_ROOT_PASSWORD=password
+
+# Set MySQL root password
+RUN service mysql start && \
+    sleep 10 && \
+    mysql --user=root --skip-password -e "ALTER USER 'root'@'localhost' IDENTIFIED WITH 'mysql_native_password' BY '${MYSQL_ROOT_PASSWORD}';" && \
+    mysql --user=root --password="${MYSQL_ROOT_PASSWORD}" -e "FLUSH PRIVILEGES;"
 
 # Set environment variables
 ENV DBT_PROFILES_DIR=/usr/app/dbt
@@ -40,4 +48,4 @@ EXPOSE 3306
 # Set work directory
 WORKDIR /usr/app
 
-CMD ["mysql"]
+CMD service mysql start && nextflow run main.nf
