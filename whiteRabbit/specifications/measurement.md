@@ -2,8 +2,6 @@
 
 ### Reading from chartevents
 
-![](md_files/image3.png)
-
 | Destination Field | Source field | Logic | Comment field |
 | --- | --- | --- | --- |
 | measurement_id |  |  |  |

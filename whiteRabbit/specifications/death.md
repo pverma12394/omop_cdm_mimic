@@ -2,8 +2,6 @@
 
 ### Reading from patients.csv
 
-![](md_files/image6.png)
-
 | Destination Field | Source field | Logic | Comment field |
 | --- | --- | --- | --- |
 | person_id | subject_id |  |  |
@@ -15,8 +13,6 @@
 | cause_source_concept_id |  |  |  |
 
 ### Reading from admissions.csv
-
-![](md_files/image7.png)
 
 | Destination Field | Source field | Logic | Comment field |
 | --- | --- | --- | --- |

@@ -2,8 +2,6 @@
 
 ### Reading from prescriptions
 
-![](md_files/image1.png)
-
 | Destination Field | Source field | Logic | Comment field |
 | --- | --- | --- | --- |
 | drug_exposure_id |  |  |  |

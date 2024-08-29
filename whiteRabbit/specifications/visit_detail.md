@@ -2,8 +2,6 @@
 
 ### Reading from admissions.csv
 
-![](md_files/image4.png)
-
 | Destination Field | Source field | Logic | Comment field |
 | --- | --- | --- | --- |
 | visit_detail_id | hadm_id |  |  |

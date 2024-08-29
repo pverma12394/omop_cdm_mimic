@@ -2,8 +2,6 @@
 
 ### Reading from patients.csv
 
-![](md_files/image1.png)
-
 | Destination Field | Source field | Logic | Comment field |
 | --- | --- | --- | --- |
 | person_id | subject_id |  |  |

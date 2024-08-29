@@ -2,8 +2,6 @@
 
 ### Reading from prescriptions
 
-![](md_files/image7.png)
-
 | Destination Field | Source field | Logic | Comment field |
 | --- | --- | --- | --- |
 | dose_era_id |  |  |  |

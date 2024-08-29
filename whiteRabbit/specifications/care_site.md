@@ -2,8 +2,6 @@
 
 ### Reading from icustays.csv
 
-![](md_files/image8.png)
-
 | Destination Field | Source field | Logic | Comment field |
 | --- | --- | --- | --- |
 | care_site_id | stay_id |  |  |

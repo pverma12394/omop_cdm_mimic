@@ -2,8 +2,6 @@
 
 ### Reading from diagnoses_icd.csv
 
-![](md_files/image5.png)
-
 | Destination Field | Source field | Logic | Comment field |
 | --- | --- | --- | --- |
 | condition_occurrence_id | seq_num |  |  |
