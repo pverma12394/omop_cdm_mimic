@@ -22,7 +22,7 @@ MIMIC-IV was used as the source dataset for this demonstration. The dataset is o
 
 [care_site](whiteRabbit/specifications/care_site.md)
 
-[source_appendix](whiteRabbit/specifications/source_appendix.md)
+[source_appendix](whiteRabbit/specifications/source_appendix2.md)
 
 ## Installing WhiteRabbit and RabbitInAHat
 
