@@ -8,6 +8,8 @@ MIMIC-IV was used as the source dataset for this demonstration. The dataset is o
 
 ![](whiteRabbit/specifications/md_files/image9.png)
 
+![](whiteRabbit/specifications/md_files/image17.png)
+
 ## Mappings
 
 [person](whiteRabbit/specifications/person.md)
@@ -23,6 +25,14 @@ MIMIC-IV was used as the source dataset for this demonstration. The dataset is o
 [care_site](whiteRabbit/specifications/care_site.md)
 
 [source_appendix](whiteRabbit/specifications/source_appendix2.md)
+
+[dose_era](whiteRabbit/specifications/dose_era.md)
+
+[drug_era](whiteRabbit/specifications/drug_era.md)
+
+[drug_exposure](whiteRabbit/specifications/drug_exposure.md)
+
+[measurement](whiteRabbit/specifications/measurement.md)
 
 ## Installing WhiteRabbit and RabbitInAHat
 
