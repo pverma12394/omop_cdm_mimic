@@ -10,4 +10,4 @@ FLUSH PRIVILEGES;
 CREATE DATABASE IF NOT EXISTS test_db;
 MYSQL_SCRIPT
 
-nextflow run main.nf --with-dag dbt.html
+exec "$@"

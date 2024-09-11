@@ -34,3 +34,5 @@ COPY . /usr/app
 WORKDIR /usr/app
 
 ENTRYPOINT ["/usr/local/bin/db-init.sh"]
+
+CMD ["nextflow", "run", "main.nf", "--with-dag", "dbt.html"]
