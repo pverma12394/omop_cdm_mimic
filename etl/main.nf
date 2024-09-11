@@ -21,33 +21,13 @@ process dataProfiling {
 */
 
 // Process to run `dbt seed`
-process dbtSeed {
+process etl {
     //input:
     //path profilingReport // Ensure profiling report is generated before this step
     script:
     """
     dbt seed --profiles-dir /usr/app/dbt --project-dir /usr/app/dbt
-    """
-}
-
-// Process to run `dbt run`
-process dbtRun {
-    //input:
-    //path profilingReport // Ensure profiling report is generated before this step
-    
-    script:
-    """
     dbt run --profiles-dir /usr/app/dbt --project-dir /usr/app/dbt
-    """
-}
-
-// Process to run `dbt compile`
-process dbtCompile {
-    //input:
-    //path profilingReport // Ensure profiling report is generated before this step
-    
-    script:
-    """
     dbt compile --profiles-dir /usr/app/dbt --project-dir /usr/app/dbt
     """
 }
@@ -57,7 +37,5 @@ workflow {
     //profilingReport = dataProfiling()
 
     // Then, run dbt commands in sequence
-    dbtSeed()
-    dbtRun()
-    dbtCompile()
+    etl()
 }
