@@ -20,7 +20,7 @@ Follow the simple instructions show in the Docker installation [guide](https://d
 ### 2. Set up the docker container
  1. First things first, after you have cloned this repo (using `git clone`) make sure you are in the `etl` folder in your terminal.
     - Use command `cd etl`
- 2. After making sure that docker deamon is running in the background, run command `docker build -t etl_test/nextflow-dbt:latest` .
+ 2. After making sure that docker deamon is running in the background, run command `docker build -t etl_test/nextflow-dbt:latest .`
     - This will build the docker image with nextflow, dbt and mysql in it. 
  3. Once the build is complete, you should the image in your docker dashboard as shown below.
 
