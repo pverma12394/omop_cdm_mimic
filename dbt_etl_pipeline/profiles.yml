@@ -1,12 +1,21 @@
 dbt_etl_pipeline:
-  outputs:
-    dev:
-      dbname: etl_test
-      host: postgres
-      pass: postgres
-      port: 5432
-      schema: omop_cdm
-      threads: 1
-      type: postgres
-      user: postgres
-  target: dev
+target: dev
+outputs:
+  seed_db:
+    type: postgres
+    threads: 1
+    host: localhost
+    port: 5432
+    user: postgres
+    pass: postgres
+    dbname: raw_data
+    schema: mimic_iv_ed
+  target_db:
+    type: postgres
+    threads: 1
+    host: localhost
+    port: 5432
+    user: postgres
+    pass: postgres
+    dbname: processed_data
+    schema: omop_cdm
