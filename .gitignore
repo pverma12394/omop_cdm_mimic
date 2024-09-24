@@ -4,3 +4,5 @@ vocabulary_BARE_BONES_20190110/*
 demo_folder/*
 *.zip
 logs/*
+dhr_etl/
+raw_data/

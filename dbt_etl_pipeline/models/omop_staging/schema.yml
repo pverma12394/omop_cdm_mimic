@@ -1,0 +1,1650 @@
+version: 2
+
+sources:
+- name: omop_raw
+  tables:
+    - name: triage
+    - name: vitalsign
+    - name: edstays
+    - name: diagnosis
+    - name: pyxis
+    - name: medrecon
+
+models:
+- name: care_site
+  description: The CARE_SITE table contains a list of uniquely identified institutional (physical or organizational) units where healthcare delivery is practiced (offices, wards, hospitals, clinics, etc.).
+  columns:
+  - name: care_site_id
+    description: No description provided
+
+  - name: care_site_name
+    description: The name of the care_site as it appears in the source data
+
+  - name: place_of_service_concept_id
+    description: This is a high-level way of characterizing a Care Site. Typically,
+      however, Care Sites can provide care in multiple settings (inpatient, outpatient,
+      etc.) and this granularity should be reflected in the visit.
+
+  - name: location_id
+    description: The location_id from the LOCATION table representing the physical
+      location of the care_site.
+
+  - name: care_site_source_value
+    description: The identifier of the care_site as it appears in the source data.
+     This could be an identifier separate from the name of the care_site.
+
+  - name: place_of_service_source_value
+    description: No description provided
+
+- name: cdm_source
+  description: Auto-generated schema for the cdm_source table
+  columns:
+  - name: cdm_source_name
+    description: The name of the CDM instance.
+
+  - name: cdm_source_abbreviation
+    description: The abbreviation of the CDM instance.
+
+  - name: cdm_holder
+    description: The holder of the CDM instance.
+
+  - name: source_description
+    description: The description of the CDM instance.
+
+  - name: source_documentation_reference
+    description: No description provided
+
+  - name: cdm_etl_reference
+    description: No description provided
+
+  - name: source_release_date
+    description: The date the data was extracted from the source system. In some systems
+      that is the same as the date the ETL was run. Typically the latest even date
+      in the source is on the source_release_date.
+
+  - name: cdm_release_date
+    description: The date the ETL script was completed. Typically this is after the
+      source_release_date.
+
+  - name: cdm_version
+    description: Version of the OMOP CDM used as string. e.g. v5.4
+
+  - name: cdm_version_concept_id
+    description: The Concept Id representing the version of the CDM.
+
+  - name: vocabulary_version
+    description: Version of the OMOP standardised vocabularies loaded
+
+- name: cohort
+  description: Auto-generated schema for the cohort table
+  columns:
+  - name: cohort_definition_id
+    description: No description provided
+
+  - name: subject_id
+    description: No description provided
+
+  - name: cohort_start_date
+    description: No description provided
+
+  - name: cohort_end_date
+    description: No description provided
+
+
+- name: cohort_definition
+  description: Auto-generated schema for the cohort_definition table
+  columns:
+  - name: cohort_definition_id
+    description: This is the identifier given to the cohort, usually by the ATLAS
+      application
+
+  - name: cohort_definition_name
+    description: A short description of the cohort
+
+  - name: cohort_definition_description
+    description: A complete description of the cohort.
+
+  - name: definition_type_concept_id
+    description: Type defining what kind of Cohort Definition the record represents
+      and how the syntax may be executed.
+
+  - name: cohort_definition_syntax
+    description: Syntax or code to operationalize the Cohort Definition.
+
+  - name: subject_concept_id
+    description: This field contains a Concept that represents the domain of the subjects
+      that are members of the cohort (e.g., Person, Provider, Visit).
+
+  - name: cohort_initiation_date
+    description: A date to indicate when the Cohort was initiated in the COHORT table.
+
+- name: condition_era
+  description: Auto-generated schema for the condition_era table
+  columns:
+  - name: condition_era_id
+    description: No description provided
+
+  - name: person_id
+    description: No description provided
+
+  - name: condition_concept_id
+    description: The Concept Id representing the Condition.
+
+  - name: condition_era_start_date
+    description: "The start date for the Condition Era\r\nconstructed from the individual\r\
+      \ninstances of Condition Occurrences.\r\nIt is the start date of the very first\r\
+      \nchronologically recorded instance of\r\nthe condition with at least 31 days\
+      \ since any prior record of the same Condition."
+
+  - name: condition_era_end_date
+    description: "The end date for the Condition Era\r\nconstructed from the individual\r\
+      \ninstances of Condition Occurrences.\r\nIt is the end date of the final\r\n\
+      continuously recorded instance of the\r\nCondition."
+
+  - name: condition_occurrence_count
+    description: "The number of individual Condition\r\nOccurrences used to construct\
+      \ the\r\ncondition era."
+
+- name: condition_occurrence
+  description: Auto-generated schema for the condition_occurrence table
+  columns:
+  - name: condition_occurrence_id
+    description: The unique key given to a condition record for a person. Refer to
+      the ETL for how duplicate conditions during the same visit were handled.
+
+  - name: person_id
+    description: The PERSON_ID of the PERSON for whom the condition is recorded.
+
+  - name: condition_concept_id
+    description: The CONDITION_CONCEPT_ID field is recommended for primary use in
+      analyses, and must be used for network studies. This is the standard concept
+      mapped from the source value which represents a condition
+
+  - name: condition_start_date
+    description: Use this date to determine the start date of the condition
+
+  - name: condition_start_datetime
+    description: No description provided
+
+  - name: condition_end_date
+    description: Use this date to determine the end date of the condition
+
+  - name: condition_end_datetime
+    description: No description provided
+
+  - name: condition_type_concept_id
+    description: This field can be used to determine the provenance of the Condition
+      record, as in whether the condition was from an EHR system, insurance claim,
+      registry, or other sources.
+
+  - name: condition_status_concept_id
+    description: This concept represents the point during the visit the diagnosis
+      was given (admitting diagnosis, final diagnosis), whether the diagnosis was
+      determined due to laboratory findings, if the diagnosis was exclusionary, or
+      if it was a preliminary diagnosis, among others.
+
+  - name: stop_reason
+    description: The Stop Reason indicates why a Condition is no longer valid with
+      respect to the purpose within the source data. Note that a Stop Reason does
+      not necessarily imply that the condition is no longer occurring.
+
+  - name: provider_id
+    description: The provider associated with condition record, e.g. the provider
+      who made the diagnosis or the provider who recorded the symptom.
+
+  - name: visit_occurrence_id
+    description: The visit during which the condition occurred.
+
+  - name: visit_detail_id
+    description: The VISIT_DETAIL record during which the condition occurred. For
+      example, if the person was in the ICU at the time of the diagnosis the VISIT_OCCURRENCE
+      record would reflect the overall hospital stay and the VISIT_DETAIL record would
+      reflect the ICU stay during the hospital visit.
+
+  - name: condition_source_value
+    description: This field houses the verbatim value from the source data representing
+      the condition that occurred. For example, this could be an ICD10 or Read code.
+
+  - name: condition_source_concept_id
+    description: This is the concept representing the condition source value and may
+      not necessarily be standard. This field is discouraged from use in analysis
+      because it is not required to contain Standard Concepts that are used across
+      the OHDSI community, and should only be used when Standard Concepts do not adequately
+      represent the source detail for the Condition necessary for a given analytic
+      use case. Consider using CONDITION_CONCEPT_ID instead to enable standardized
+      analytics that can be consistent across the network.
+
+  - name: condition_status_source_value
+    description: This field houses the verbatim value from the source data representing
+      the condition status.
+
+- name: cost
+  description: Auto-generated schema for the cost table
+  columns:
+  - name: cost_id
+    description: No description provided
+
+  - name: cost_event_id
+    description: No description provided
+
+  - name: cost_domain_id
+    description: No description provided
+
+  - name: cost_type_concept_id
+    description: No description provided
+  
+  - name: currency_concept_id
+    description: No description provided
+
+  - name: total_charge
+    description: No description provided
+
+  - name: total_cost
+    description: No description provided
+
+  - name: total_paid
+    description: No description provided
+
+  - name: paid_by_payer
+    description: No description provided
+
+  - name: paid_by_patient
+    description: No description provided
+
+  - name: paid_patient_copay
+    description: No description provided
+
+  - name: paid_patient_coinsurance
+    description: No description provided
+
+  - name: paid_patient_deductible
+    description: No description provided
+
+  - name: paid_by_primary
+    description: No description provided
+
+  - name: paid_ingredient_cost
+    description: No description provided
+
+  - name: paid_dispensing_fee
+    description: No description provided
+
+  - name: payer_plan_period_id
+    description: No description provided
+
+  - name: amount_allowed
+    description: No description provided
+
+  - name: revenue_code_concept_id
+    description: No description provided
+
+  - name: revenue_code_source_value
+    description: Revenue codes are a method to charge for a class of procedures and
+      conditions in the U.S. hospital system.
+
+  - name: drg_concept_id
+    description: No description provided
+
+  - name: drg_source_value
+    description: Diagnosis Related Groups are US codes used to classify hospital cases
+      into one of approximately 500 groups.
+
+- name: death
+  description: Auto-generated schema for the death table
+  columns:
+  - name: person_id
+    description: No description provided
+
+  - name: death_date
+    description: The date the person was deceased.
+
+  - name: death_datetime
+    description: No description provided
+
+  - name: death_type_concept_id
+    description: This is the provenance of the death record, i.e., where it came from.
+      It is possible that an administrative claims database would source death information
+      from a government file so do not assume the Death Type is the same as the Visit
+      Type, etc.
+
+  - name: cause_concept_id
+    description: This is the Standard Concept representing the Person's cause of death,
+      if available.
+
+  - name: cause_source_value
+    description: No description provided
+
+  - name: cause_source_concept_id
+    description: No description provided
+
+
+- name: device_exposure
+  description: Auto-generated schema for the device_exposure table
+  columns:
+  - name: device_exposure_id
+    description: The unique key given to records a person's exposure to a foreign
+      physical object or instrument.
+
+  - name: person_id
+    description: No description provided
+
+  - name: device_concept_id
+    description: The DEVICE_CONCEPT_ID field is recommended for primary use in analyses,
+      and must be used for network studies. This is the standard concept mapped from
+      the source concept id which represents a foreign object or instrument the person
+      was exposed to.
+
+  - name: device_exposure_start_date
+    description: Use this date to determine the start date of the device record.
+
+  - name: device_exposure_start_datetime
+    description: No description provided
+
+  - name: device_exposure_end_date
+    description: The DEVICE_EXPOSURE_END_DATE denotes the day the device exposure
+      ended for the patient, if given.
+
+  - name: device_exposure_end_datetime
+    description: No description provided
+
+  - name: device_type_concept_id
+    description: You can use the TYPE_CONCEPT_ID to denote the provenance of the record,
+      as in whether the record is from administrative claims or EHR.
+
+  - name: unique_device_id
+    description: This is the Unique Device Identification (UDI-DI) number for devices
+      regulated by the FDA, if given.
+
+  - name: production_id
+    description: This is the Production Identifier (UDI-PI) portion of the Unique
+      Device Identification.
+
+  - name: quantity
+    description: No description provided
+
+  - name: provider_id
+    description: The Provider associated with device record, e.g. the provider who
+      wrote the prescription or the provider who implanted the device.
+
+  - name: visit_occurrence_id
+    description: The Visit during which the device was prescribed or given.
+
+  - name: visit_detail_id
+    description: The Visit Detail during which the device was prescribed or given.
+
+  - name: device_source_value
+    description: This field houses the verbatim value from the source data representing
+      the device exposure that occurred. For example, this could be an NDC or Gemscript
+      code.
+
+  - name: device_source_concept_id
+    description: This is the concept representing the device source value and may
+      not necessarily be standard. This field is discouraged from use in analysis
+      because it is not required to contain Standard Concepts that are used across
+      the OHDSI community, and should only be used when Standard Concepts do not adequately
+      represent the source detail for the Device necessary for a given analytic use
+      case. Consider using DEVICE_CONCEPT_ID instead to enable standardized analytics
+      that can be consistent across the network.
+
+  - name: unit_concept_id
+    description: UNIT_SOURCE_VALUES should be mapped to a Standard Concept in the
+      Unit domain that best represents the unit as given in the source data.
+
+  - name: unit_source_value
+    description: This field houses the verbatim value from the source data representing
+      the unit of the Device. For example, blood transfusions are considered devices
+      and can be given in mL quantities.
+
+  - name: unit_source_concept_id
+    description: This is the concept representing the UNIT_SOURCE_VALUE and may not
+      necessarily be standard. This field is discouraged from use in analysis because
+      it is not required to contain Standard Concepts that are used across the OHDSI
+      community, and should only be used when Standard Concepts do not adequately
+      represent the source detail for the Unit necessary for a given analytic use
+      case. Consider using UNIT_CONCEPT_ID instead to enable standardized analytics
+      that can be consistent across the network.
+
+- name: dose_era
+  description: Auto-generated schema for the dose_era table
+  columns:
+  - name: dose_era_id
+    description: No description provided
+
+  - name: person_id
+    description: No description provided
+
+  - name: drug_concept_id
+    description: The Concept Id representing the specific drug ingredient.
+
+  - name: unit_concept_id
+    description: The Concept Id representing the unit of the specific drug ingredient.
+
+  - name: dose_value
+    description: The numeric value of the dosage of the drug_ingredient.
+
+  - name: dose_era_start_date
+    description: The date the Person started on the specific dosage, with at least
+      31 days since any prior exposure.
+
+  - name: dose_era_end_date
+    description: No description provided
+
+- name: drug_era
+  description: Auto-generated schema for the drug_era table
+  columns:
+  - name: drug_era_id
+    description: No description provided
+
+  - name: person_id
+    description: No description provided
+
+  - name: drug_concept_id
+    description: The drug_concept_id should conform to the concept class 'ingredient'
+      as the drug_era is an era of time where a person is exposed to a particular
+      drug ingredient.
+
+  - name: drug_era_start_date
+    description: No description provided
+
+  - name: drug_era_end_date
+    description: No description provided
+
+  - name: drug_exposure_count
+    description: The count of grouped DRUG_EXPOSURE records that were included in
+      the DRUG_ERA row
+
+  - name: gap_days
+    description: No description provided
+
+- name: drug_exposure
+  description: Auto-generated schema for the drug_exposure table
+  columns:
+  - name: drug_exposure_id
+    description: The unique key given to records of drug dispensings or administrations
+      for a person. Refer to the ETL for how duplicate drugs during the same visit
+      were handled.
+
+  - name: person_id
+    description: The PERSON_ID of the PERSON for whom the drug dispensing or administration
+      is recorded. This may be a system generated code.
+
+  - name: drug_concept_id
+    description: The DRUG_CONCEPT_ID field is recommended for primary use in analyses,
+      and must be used for network studies. This is the standard concept mapped from
+      the source concept id which represents a drug product or molecule otherwise
+      introduced to the body. The drug concepts can have a varying degree of information
+      about drug strength and dose. This information is relevant in the context of
+      quantity and administration information in the subsequent fields plus strength
+      information from the DRUG_STRENGTH table, provided as part of the standard vocabulary
+      download.
+
+  - name: drug_exposure_start_date
+    description: Use this date to determine the start date of the drug record.
+
+  - name: drug_exposure_start_datetime
+    description: No description provided
+
+  - name: drug_exposure_end_date
+    description: The DRUG_EXPOSURE_END_DATE denotes the day the drug exposure ended
+      for the patient.
+
+  - name: drug_exposure_end_datetime
+    description: No description provided
+
+  - name: verbatim_end_date
+    description: This is the end date of the drug exposure as it appears in the source
+      data, if it is given
+
+  - name: drug_type_concept_id
+    description: You can use the TYPE_CONCEPT_ID to delineate between prescriptions
+      written vs. prescriptions dispensed vs. medication history vs. patient-reported
+      exposure, etc.
+
+  - name: stop_reason
+    description: The reason a person stopped a medication as it is represented in
+      the source. Reasons include regimen completed, changed, removed, etc. This field
+      will be retired in v6.0.
+
+  - name: refills
+    description: This is only filled in when the record is coming from a prescription
+      written this field is meant to represent intended refills at time of the prescription.
+
+  - name: quantity
+    description: No description provided
+
+  - name: days_supply
+    description: No description provided
+
+  - name: sig
+    description: This is the verbatim instruction for the drug as written by the provider.
+
+  - name: route_concept_id
+    description: No description provided
+
+  - name: lot_number
+    description: No description provided
+  - name: provider_id
+    description: The Provider associated with drug record, e.g. the provider who wrote
+      the prescription or the provider who administered the drug.
+
+  - name: visit_occurrence_id
+    description: The Visit during which the drug was prescribed, administered or dispensed.
+
+  - name: visit_detail_id
+    description: The VISIT_DETAIL record during which the drug exposure occurred.
+      For example, if the person was in the ICU at the time of the drug administration
+      the VISIT_OCCURRENCE record would reflect the overall hospital stay and the
+      VISIT_DETAIL record would reflect the ICU stay during the hospital visit.
+
+  - name: drug_source_value
+    description: This field houses the verbatim value from the source data representing
+      the drug exposure that occurred. For example, this could be an NDC or Gemscript
+      code.
+
+  - name: drug_source_concept_id
+    description: This is the concept representing the drug source value and may not
+      necessarily be standard. This field is discouraged from use in analysis because
+      it is not required to contain Standard Concepts that are used across the OHDSI
+      community, and should only be used when Standard Concepts do not adequately
+      represent the source detail for the Drug necessary for a given analytic use
+      case. Consider using DRUG_CONCEPT_ID instead to enable standardized analytics
+      that can be consistent across the network.
+
+  - name: route_source_value
+    description: This field houses the verbatim value from the source data representing
+      the drug route.
+
+  - name: dose_unit_source_value
+    description: This field houses the verbatim value from the source data representing
+      the dose unit of the drug given.
+
+- name: episode
+  description: Auto-generated schema for the episode table
+  columns:
+  - name: episode_id
+    description: A unique identifier for each Episode.
+
+  - name: person_id
+    description: The PERSON_ID of the PERSON for whom the episode is recorded.
+
+  - name: episode_concept_id
+    description: The EPISODE_CONCEPT_ID represents the kind abstraction related to
+      the disease phase, outcome or treatment.
+
+  - name: episode_start_date
+    description: The date when the Episode beings.
+
+  - name: episode_start_datetime
+    description: The date and time when the Episode begins.
+
+  - name: episode_end_date
+    description: The date when the instance of the Episode is considered to have ended.
+
+  - name: episode_end_datetime
+    description: The date when the instance of the Episode is considered to have ended.
+
+  - name: episode_parent_id
+    description: Use this field to find the Episode that subsumes the given Episode
+      record. This is used in the case that an Episode are nested into each other.
+
+  - name: episode_number
+    description: For sequences of episodes, this is used to indicate the order the
+      episodes occurred. For example, lines of treatment could be indicated here.
+
+  - name: episode_object_concept_id
+    description: A Standard Concept representing the disease phase, outcome, or other
+      abstraction of which the episode consists.  For example, if the EPISODE_CONCEPT_ID
+      is [treatment regimen](https://athena.ohdsi.org/search-terms/terms/32531) then
+      the EPISODE_OBJECT_CONCEPT_ID should contain the chemotherapy regimen concept,
+      like [Afatinib monotherapy](https://athena.ohdsi.org/search-terms/terms/35804392).
+
+  - name: episode_type_concept_id
+    description: This field can be used to determine the provenance of the Episode
+      record, as in whether the episode was from an EHR system, insurance claim, registry,
+      or other sources.
+
+  - name: episode_source_value
+    description: The source code for the Episode as it appears in the source data.
+      This code is mapped to a Standard Condition Concept in the Standardized Vocabularies
+      and the original code is stored here for reference.
+
+  - name: episode_source_concept_id
+    description: A foreign key to a Episode Concept that refers to the code used in
+      the source.
+
+- name: episode_event
+  description: Auto-generated schema for the episode_event table
+  columns:
+  - name: episode_id
+    description: Use this field to link the EPISODE_EVENT record to its EPISODE.
+
+  - name: event_id
+    description: This field is the primary key of the linked record in the database.
+      For example, if the Episode Event is a Condition Occurrence, then the CONDITION_OCCURRENCE_ID
+      of the linked record goes in this field.
+
+  - name: episode_event_field_concept_id
+    description: This field is the CONCEPT_ID that identifies which table the primary
+      key of the linked record came from.
+
+- name: fact_relationship
+  description: Auto-generated schema for the fact_relationship table
+  columns:
+  - name: domain_concept_id_1
+    description: No description provided
+
+  - name: fact_id_1
+    description: No description provided
+
+  - name: domain_concept_id_2
+    description: No description provided
+
+  - name: fact_id_2
+    description: No description provided
+
+  - name: relationship_concept_id
+    description: No description provided
+
+- name: image_feature
+  description: Auto-generated schema for the image_feature table
+  columns:
+  - name: feature_id
+    description: This field represents the unique identifier for the image feature.
+
+  - name: image_id
+    description: This field represents the unique identifier for each image.
+
+  - name: feature_type
+    description: This field represents the type of extracted feature (e.g., shape,
+      texture, intensity).
+
+  - name: feature_value
+    description: This field represents the value of the extracted feature.
+
+  - name: unit_concept_id
+    description: The Concept Id representing the unit of measurement for the feature
+      value
+
+  - name: extraction_method
+    description: This field represents the method or algorithm used to extract the
+      feature.
+
+  - name: date_of_extraction
+    description: This field represents the date when the feature was extracted from
+      the image.
+
+
+- name: image_occurrence
+  description: Auto-generated schema for the image_occurrence table
+  columns:
+  - name: image_id
+    description: This field represents the unique identifier for each image.
+
+  - name: person_id
+    description: This field represents the unique identifier for the patient associated
+      with the image.
+
+  - name: study_id
+    description: This field represents the unique identifier for the imaging study.
+
+  - name: modality
+    description: This field represents the imaging modality used (e.g., MRI, CT, X-ray).
+
+  - name: body_part_examined
+    description: This field represents the body part examined in the imaging study.
+
+  - name: date_of_image
+    description: This field represents the date when the imaging study was performed.
+
+  - name: file_location
+    description: This field represents the location of the image file in the storage
+      system.
+
+
+- name: location
+  description: Auto-generated schema for the location table
+  columns:
+  - name: location_id
+    description: The unique key given to a unique Location.
+
+  - name: address_1
+    description: This is the first line of the address.
+
+  - name: address_2
+    description: This is the second line of the address
+
+  - name: city
+    description: No description provided
+
+  - name: state
+    description: No description provided
+
+  - name: zip
+    description: No description provided
+
+  - name: county
+    description: No description provided
+
+  - name: location_source_value
+    description: No description provided
+
+  - name: country_concept_id
+    description: The Concept Id representing the country. Values should conform to
+      the [Geography](https://athena.ohdsi.org/search-terms/terms?domain=Geography&standardConcept=Standard&page=1&pageSize=15&query=&boosts)
+      domain.
+
+  - name: country_source_value
+    description: The name of the country.
+
+  - name: latitude
+    description: No description provided
+
+  - name: longitude
+    description: No description provided
+
+
+- name: measurement
+  description: Auto-generated schema for the measurement table
+  columns:
+  - name: measurement_id
+    description: The unique key given to a Measurement record for a Person. Refer
+      to the ETL for how duplicate Measurements during the same Visit were handled.
+
+  - name: person_id
+    description: The PERSON_ID of the Person for whom the Measurement is recorded.
+      This may be a system generated code.
+
+  - name: measurement_concept_id
+    description: The MEASUREMENT_CONCEPT_ID field is recommended for primary use in
+      analyses, and must be used for network studies. This is the standard concept
+      mapped from the source value which represents a measurement.
+
+  - name: measurement_date
+    description: Use this date to determine the date of the measurement.
+
+  - name: measurement_datetime
+    description: No description provided
+
+  - name: measurement_time
+    description: No description provided
+
+  - name: measurement_type_concept_id
+    description: This field can be used to determine the provenance of the Measurement
+      record, as in whether the measurement was from an EHR system, insurance claim,
+      registry, or other sources.
+
+  - name: operator_concept_id
+    description: The meaning of Concept [4172703](https://athena.ohdsi.org/search-terms/terms/4172703)
+      for '=' is identical to omission of a OPERATOR_CONCEPT_ID value. Since the use
+      of this field is rare, it's important when devising analyses to not to forget
+      testing for the content of this field for values different from =.
+
+  - name: value_as_number
+    description: This is the numerical value of the Result of the Measurement, if
+      available. Note that measurements such as blood pressures will be split into
+      their component parts i.e. one record for systolic, one record for diastolic.
+
+  - name: value_as_concept_id
+    description: If the raw data gives a categorial result for measurements those
+      values are captured and mapped to standard concepts in the 'Meas Value' domain.
+
+  - name: unit_concept_id
+    description: At present, there isn't a prescribed unit for individual measurements,
+      such as Hemoglobin A1C, meaning it's not obligatory to express these measurements
+      as a percentage. UNIT_SOURCE_VALUES should be linked to a Standard Concept within
+      the Unit domain that most accurately reflects the unit provided in the source
+      data.
+
+  - name: range_low
+    description: Ranges have the same unit as the VALUE_AS_NUMBER. These ranges are
+      provided by the source and should remain NULL if not given.
+
+  - name: range_high
+    description: Ranges have the same unit as the VALUE_AS_NUMBER. These ranges are
+      provided by the source and should remain NULL if not given.
+
+  - name: provider_id
+    description: The provider associated with measurement record, e.g. the provider
+      who ordered the test or the provider who recorded the result.
+
+  - name: visit_occurrence_id
+    description: The visit during which the Measurement occurred.
+
+  - name: visit_detail_id
+    description: The VISIT_DETAIL record during which the Measurement occurred. For
+      example, if the Person was in the ICU at the time the VISIT_OCCURRENCE record
+      would reflect the overall hospital stay and the VISIT_DETAIL record would reflect
+      the ICU stay during the hospital visit.
+
+  - name: measurement_source_value
+    description: This field contains the exact value from the source data that represents
+      the measurement that occurred.
+
+  - name: measurement_source_concept_id
+    description: This is the concept representing the MEASUREMENT_SOURCE_VALUE and
+      may not necessarily be standard. This field is discouraged from use in analysis
+      because it is not required to contain Standard Concepts that are used across
+      the OHDSI community, and should only be used when Standard Concepts do not adequately
+      represent the source detail for the Measurement necessary for a given analytic
+      use case. Consider using MEASUREMENT_CONCEPT_ID instead to enable standardized
+      analytics that can be consistent across the network.
+
+  - name: unit_source_value
+    description: This field contains the exact value from the source data that represents
+      the unit of measurement used.
+
+  - name: unit_source_concept_id
+    description: '"This is the concept representing the UNIT_SOURCE_VALUE and may
+      not necessarily be standard. This field is discouraged from use in analysis
+      because it is not required to contain Standard Concepts that are used across
+      the OHDSI community, and should only be used when Standard Concepts do not adequately
+      represent the source detail for the Measurement necessary for a given analytic
+      use case. Consider using UNIT_CONCEPT_ID instead to enable standardized analytics
+      that can be consistent across the network."'
+
+  - name: value_source_value
+    description: This field houses the verbatim result value of the Measurement from
+      the source data .
+
+  - name: acuity_source_value
+    description: This field houses the verbatim result value of the Acuity from
+      the Triage source data . This is a CUSTOM Omop field
+
+  - name: measurement_event_id
+    description: If the Measurement record is related to another record in the database,
+      this field is the primary key of the linked record.
+
+  - name: meas_event_field_concept_id
+    description: If the Measurement record is related to another record in the database,
+      this field is the CONCEPT_ID that identifies which table the primary key of
+      the linked record came from.
+
+- name: metadata
+  description: Auto-generated schema for the metadata table
+  columns:
+  - name: metadata_id
+    description: The unique key given to a Metadata record.
+
+  - name: metadata_concept_id
+    description: No description provided
+
+  - name: metadata_type_concept_id
+    description: No description provided
+
+  - name: name
+    description: No description provided
+
+  - name: value_as_string
+    description: No description provided
+
+  - name: value_as_concept_id
+    description: No description provided
+
+  - name: value_as_number
+    description: This is the numerical value of the result of the Metadata, if applicable
+      and available. It is not expected that all Metadata will have numeric results,
+      rather, this field is here to house values should they exist.
+
+  - name: metadata_date
+    description: No description provided
+
+  - name: metadata_datetime
+    description: No description provided
+
+
+- name: methylation
+  description: Auto-generated schema for the methylation table
+  columns:
+  - name: methylation_id
+    description: This field represents the unique identifier for each methylation
+      record.
+
+  - name: chromosome
+    description: This field represents the chromosome where the CpG site is located
+      in the genome.
+
+  - name: cpg_site_id
+    description: This field represents the unique identifier for CpG sites.
+
+  - name: event_id
+    description: This field represents the identifier to map to an event in the study
+      or clinical data.
+
+  - name: file_id
+    description: This field represents the identifier to link a file related to methylation
+      data.
+
+  - name: gene_id
+    description: This field represents the unique identifier for genes in the NCBI
+      database.
+
+  - name: methylated_intensity
+    description: This field represents the intensity value for methylated CpG sites
+
+  - name: methylation_level
+    description: This field represents the level of DNA methylation at a CpG site,
+      typically expressed as a beta value
+
+  - name: position
+    description: This field represents the position of the CpG site on the chromosome
+
+  - name: protocol_id
+    description: This field represents the unique identifier for each methylation
+      record.
+
+  - name: person_id
+    description: The PERSON_ID of the Person for whom the methylation Observation
+      is recorded.
+
+  - name: unmethylated_intensity
+    description: This field represents the intensity value for unmethylated CpG sites
+
+
+- name: note
+  description: Auto-generated schema for the note table
+  columns:
+  - name: note_id
+    description: A unique identifier for each note.
+
+  - name: person_id
+    description: No description provided
+
+  - name: note_date
+    description: The date the note was recorded.
+
+  - name: note_datetime
+    description: No description provided
+
+  - name: note_type_concept_id
+    description: The provenance of the note. Most likely this will be EHR.
+
+  - name: note_class_concept_id
+    description: "A Standard Concept Id representing the HL7 LOINC\r\nDocument Type\
+      \ Vocabulary classification of the note."
+
+  - name: note_title
+    description: The title of the note.
+
+  - name: note_text
+    description: The content of the note.
+
+  - name: encoding_concept_id
+    description: This is the Concept representing the character encoding type.
+
+  - name: language_concept_id
+    description: The language of the note.
+
+  - name: provider_id
+    description: The Provider who wrote the note.
+
+  - name: visit_occurrence_id
+    description: The Visit during which the note was written.
+
+  - name: visit_detail_id
+    description: The Visit Detail during which the note was written.
+
+  - name: note_source_value
+    description: No description provided
+
+  - name: note_event_id
+    description: If the Note record is related to another record in the database,
+      this field is the primary key of the linked record.
+
+  - name: note_event_field_concept_id
+    description: If the Note record is related to another record in the database,
+      this field is the CONCEPT_ID that identifies which table the primary key of
+      the linked record came from.
+
+
+- name: note_nlp
+  description: Auto-generated schema for the note_nlp table
+  columns:
+  - name: note_nlp_id
+    description: A unique identifier for the NLP record.
+
+  - name: note_id
+    description: This is the NOTE_ID for the NOTE record the NLP record is associated
+      to.
+
+  - name: section_concept_id
+    description: No description provided
+
+  - name: snippet
+    description: A small window of text surrounding the term
+
+  - name: '"offset"'
+    description: Character offset of the extracted term in the input note
+
+  - name: lexical_variant
+    description: Raw text extracted from the NLP tool.
+
+  - name: note_nlp_concept_id
+    description: No description provided
+
+  - name: note_nlp_source_concept_id
+    description: No description provided
+
+  - name: nlp_system
+    description: No description provided
+
+  - name: nlp_date
+    description: The date of the note processing.
+
+  - name: nlp_datetime
+    description: The date and time of the note processing.
+
+  - name: term_exists
+    description: No description provided
+
+  - name: term_temporal
+    description: No description provided
+
+  - name: term_modifiers
+    description: No description provided
+
+
+- name: observation
+  description: Auto-generated schema for the observation table
+  columns:
+  - name: observation_id
+    description: The unique key given to an Observation record for a Person. Refer
+      to the ETL for how duplicate Observations during the same Visit were handled.
+
+  - name: person_id
+    description: The PERSON_ID of the Person for whom the Observation is recorded.
+      This may be a system generated code.
+
+  - name: observation_concept_id
+    description: The OBSERVATION_CONCEPT_ID field is recommended for primary use in
+      analyses, and must be used for network studies.
+
+  - name: observation_date
+    description: The date of when the Observation was obtained. Depending on what
+      the Observation represents this could be the date of a lab test, the date of
+      a survey, or the date a patient's family history was taken.
+
+  - name: observation_datetime
+    description: No description provided
+
+  - name: observation_type_concept_id
+    description: This field can be used to determine the provenance of the Observation
+      record, as in whether the measurement was from an EHR system, insurance claim,
+      registry, or other sources.
+
+  - name: value_as_number
+    description: This is the numerical value of the Result of the Observation, if
+      applicable and available. It is not expected that all Observations will have
+      numeric results, rather, this field is here to house values should they exist.
+
+  - name: value_as_string
+    description: This is the categorical value of the Result of the Observation, if
+      applicable and available.
+
+  - name: value_as_concept_id
+    description: It is possible that some records destined for the Observation table
+      have two clinical ideas represented in one source code. This is common with
+      ICD10 codes that describe a family history of some Condition, for example. In
+      OMOP the Vocabulary breaks these two clinical ideas into two codes; one becomes
+      the OBSERVATION_CONCEPT_ID and the other becomes the VALUE_AS_CONCEPT_ID. It
+      is important when using the Observation table to keep this possibility in mind
+      and to examine the VALUE_AS_CONCEPT_ID field for relevant information.
+
+  - name: qualifier_concept_id
+    description: This field contains all attributes specifying the clinical fact further,
+      such as as degrees, severities, drug-drug interaction alerts etc.
+
+  - name: unit_concept_id
+    description: There is currently no recommended unit for individual observation
+      concepts. UNIT_SOURCE_VALUES should be mapped to a Standard Concept in the Unit
+      domain that best represents the unit as given in the source data.
+
+  - name: provider_id
+    description: The provider associated with the observation record, e.g. the provider
+      who ordered the test or the provider who recorded the result.
+
+  - name: visit_occurrence_id
+    description: The visit during which the Observation occurred.
+
+  - name: visit_detail_id
+    description: The VISIT_DETAIL record during which the Observation occurred. For
+      example, if the Person was in the ICU at the time the VISIT_OCCURRENCE record
+      would reflect the overall hospital stay and the VISIT_DETAIL record would reflect
+      the ICU stay during the hospital visit.
+
+  - name: observation_source_value
+    description: This field houses the verbatim value from the source data representing
+      the Observation that occurred. For example, this could be an ICD10 or Read code.
+
+  - name: observation_source_concept_id
+    description: This is the concept representing the OBSERVATION_SOURCE_VALUE and
+      may not necessarily be standard. This field is discouraged from use in analysis
+      because it is not required to contain Standard Concepts that are used across
+      the OHDSI community, and should only be used when Standard Concepts do not adequately
+      represent the source detail for the Observation necessary for a given analytic
+      use case. Consider using OBSERVATION_CONCEPT_ID instead to enable standardized
+      analytics that can be consistent across the network.
+
+  - name: unit_source_value
+    description: This field houses the verbatim value from the source data representing
+      the unit of the Observation that occurred.
+
+  - name: qualifier_source_value
+    description: This field houses the verbatim value from the source data representing
+      the qualifier of the Observation that occurred.
+
+  - name: value_source_value
+    description: This field houses the verbatim result value of the Observation from
+      the source data.  Do not get confused with the Observation_source_value which
+      captures source value of the observation mapped to observation_concept_id. This
+      field is the observation result value from the source.
+
+  - name: observation_event_id
+    description: If the Observation record is related to another record in the database,
+      this field is the primary key of the linked record.
+
+  - name: obs_event_field_concept_id
+    description: If the Observation record is related to another record in the database,
+      this field is the CONCEPT_ID that identifies which table the primary key of
+      the linked record came from.
+
+- name: observation_period
+  description: Auto-generated schema for the observation_period table
+  columns:
+  - name: observation_period_id
+    description: A Person can have multiple discrete Observation Periods which are
+      identified by the Observation_Period_Id.
+
+  - name: person_id
+    description: The Person ID of the PERSON record for which the Observation Period
+      is recorded.
+
+  - name: observation_period_start_date
+    description: Use this date to determine the start date of the Observation Period.
+
+  - name: observation_period_end_date
+    description: Use this date to determine the end date of the period for which we
+      can assume that all events for a Person are recorded.
+
+  - name: period_type_concept_id
+    description: This field can be used to determine the provenance of the Observation
+      Period as in whether the period was determined from an insurance enrollment
+      file, EHR healthcare encounters, or other sources.
+
+- name: payer_plan_period
+  description: Auto-generated schema for the payer_plan_period table
+  columns:
+  - name: payer_plan_period_id
+    description: A unique identifier for each unique combination of a Person, Payer,
+      Plan, and Period of time.
+
+  - name: person_id
+    description: The Person covered by the Plan.
+
+  - name: payer_plan_period_start_date
+    description: Start date of Plan coverage.
+
+  - name: payer_plan_period_end_date
+    description: End date of Plan coverage.
+
+  - name: payer_concept_id
+    description: This field represents the organization who reimburses the provider
+      which administers care to the Person.
+
+  - name: payer_source_value
+    description: This is the Payer as it appears in the source data.
+
+  - name: payer_source_concept_id
+    description: No description provided
+
+  - name: plan_concept_id
+    description: This field represents the specific health benefit Plan the Person
+      is enrolled in.
+
+  - name: plan_source_value
+    description: This is the health benefit Plan of the Person as it appears in the
+      source data.
+
+  - name: plan_source_concept_id
+    description: No description provided
+
+  - name: sponsor_concept_id
+    description: This field represents the sponsor of the Plan who finances the Plan.
+      This includes self-insured, small group health plan and large group health plan.
+
+  - name: sponsor_source_value
+    description: The Plan sponsor as it appears in the source data.
+
+  - name: sponsor_source_concept_id
+    description: No description provided
+
+  - name: family_source_value
+    description: The common identifier for all people (often a family) that covered
+      by the same policy.
+
+  - name: stop_reason_concept_id
+    description: This field represents the reason the Person left the Plan, if known.
+
+  - name: stop_reason_source_value
+    description: The Plan stop reason as it appears in the source data.
+
+  - name: stop_reason_source_concept_id
+    description: No description provided
+
+- name: person
+  description: Auto-generated schema for the person table
+  columns:
+  - name: person_id
+    description: It is assumed that every person with a different unique identifier
+      is in fact a different person and should be treated independently.
+
+  - name: gender_concept_id
+    description: This field is meant to capture the biological sex at birth of the
+      Person. This field should not be used to study gender identity issues.
+
+  - name: year_of_birth
+    description: Compute age using year_of_birth.
+
+  - name: month_of_birth
+    description: No description provided
+
+  - name: day_of_birth
+    description: No description provided
+
+  - name: birth_datetime
+    description: No description provided
+
+  - name: race_concept_id
+    description: This field captures race or ethnic background of the person.
+
+  - name: ethnicity_concept_id
+    description: 'This field captures Ethnicity as defined by the Office of Management
+      and Budget (OMB) of the US Government: it distinguishes only between "Hispanic"
+      and "Not Hispanic". Races and ethnic backgrounds are not stored here.'
+
+  - name: location_id
+    description: The location refers to the physical address of the person. This field
+      should capture the last known location of the person.
+
+  - name: provider_id
+    description: The Provider refers to the last known primary care provider (General
+      Practitioner).
+
+  - name: care_site_id
+    description: The Care Site refers to where the Provider typically provides the
+      primary care.
+
+  - name: person_source_value
+    description: Use this field to link back to persons in the source data. This is
+      typically used for error checking of ETL logic.
+
+  - name: gender_source_value
+    description: This field is used to store the biological sex of the person from
+      the source data. It is not intended for use in standard analytics but for reference
+      only.
+
+  - name: gender_source_concept_id
+    description: Due to the small number of options, this tends to be zero.
+
+  - name: race_source_value
+    description: This field is used to store the race of the person from the source
+      data. It is not intended for use in standard analytics but for reference only.
+
+  - name: race_source_concept_id
+    description: Due to the small number of options, this tends to be zero.
+
+  - name: ethnicity_source_value
+    description: This field is used to store the ethnicity of the person from the
+      source data. It is not intended for use in standard analytics but for reference
+      only.
+
+  - name: ethnicity_source_concept_id
+    description: Due to the small number of options, this tends to be zero.
+
+- name: procedure_occurrence
+  description: Auto-generated schema for the procedure_occurrence table
+  columns:
+  - name: procedure_occurrence_id
+    description: The unique key given to a procedure record for a person. Refer to
+      the ETL for how duplicate procedures during the same visit were handled.
+
+  - name: person_id
+    description: The PERSON_ID of the PERSON for whom the procedure is recorded. This
+      may be a system generated code.
+
+  - name: procedure_concept_id
+    description: The PROCEDURE_CONCEPT_ID field is recommended for primary use in
+      analyses, and must be used for network studies. This is the standard concept
+      mapped from the source value which represents a procedure
+
+  - name: procedure_date
+    description: Use this date to determine the date the procedure started.
+
+  - name: procedure_datetime
+    description: No description provided
+
+  - name: procedure_end_date
+    description: Use this field to house the date that the procedure ended.
+
+  - name: procedure_end_datetime
+    description: Use this field to house the datetime that the procedure ended.
+
+  - name: procedure_type_concept_id
+    description: This field can be used to determine the provenance of the Procedure
+      record, as in whether the procedure was from an EHR system, insurance claim,
+      registry, or other sources.
+
+  - name: modifier_concept_id
+    description: The modifiers are intended to give additional information about the
+      procedure but as of now the vocabulary is under review.
+
+  - name: quantity
+    description: If the quantity value is omitted, a single procedure is assumed.
+
+  - name: provider_id
+    description: The provider associated with the procedure record, e.g. the provider
+      who performed the Procedure.
+
+  - name: visit_occurrence_id
+    description: The visit during which the procedure occurred.
+
+  - name: visit_detail_id
+    description: The VISIT_DETAIL record during which the Procedure occurred. For
+      example, if the Person was in the ICU at the time of the Procedure the VISIT_OCCURRENCE
+      record would reflect the overall hospital stay and the VISIT_DETAIL record would
+      reflect the ICU stay during the hospital visit.
+
+  - name: procedure_source_value
+    description: This field houses the verbatim value from the source data representing
+      the procedure that occurred. For example, this could be an CPT4 or OPCS4 code.
+
+  - name: procedure_source_concept_id
+    description: This is the concept representing the procedure source value and may
+      not necessarily be standard. This field is discouraged from use in analysis
+      because it is not required to contain Standard Concepts that are used across
+      the OHDSI community, and should only be used when Standard Concepts do not adequately
+      represent the source detail for the Procedure necessary for a given analytic
+      use case. Consider using PROCEDURE_CONCEPT_ID instead to enable standardized
+      analytics that can be consistent across the network.
+
+  - name: modifier_source_value
+    description: This field houses the verbatim value from the source data representing
+      the modifier code for the procedure that occurred.
+
+- name: provider
+  description: Auto-generated schema for the provider table
+  columns:
+  - name: provider_id
+    description: It is assumed that every provider with a different unique identifier
+      is in fact a different person and should be treated independently.
+
+  - name: provider_name
+    description: This field contains information that describes a healthcare provider.
+
+  - name: npi
+    description: This is the National Provider Number issued to health care providers
+      in the US by the Centers for Medicare and Medicaid Services (CMS).
+
+  - name: dea
+    description: This is the identifier issued by the DEA, a US federal agency, that
+      allows a provider to write prescriptions for controlled substances.
+
+  - name: specialty_concept_id
+    description: This field either represents the most common specialty that occurs
+      in the data or the most specific concept that represents all specialties listed,
+      should the provider have more than one. This includes physician specialties
+      such as internal medicine, emergency medicine, etc. and allied health professionals
+      such as nurses, midwives, and pharmacists.
+
+  - name: care_site_id
+    description: This is the CARE_SITE_ID for the location that the provider primarily
+      practices in.
+
+  - name: year_of_birth
+    description: No description provided
+
+  - name: gender_concept_id
+    description: This field represents the recorded gender of the provider in the
+      source data.
+
+  - name: provider_source_value
+    description: Use this field to link back to providers in the source data. This
+      is typically used for error checking of ETL logic.
+
+  - name: specialty_source_value
+    description: This refers to the specific type of healthcare provider or field
+      of expertise listed in the source data, encompassing physician specialties like
+      internal medicine, emergency medicine, etc., as well as allied health professionals
+      such as nurses, midwives, and pharmacists. It covers medical specialties like
+      surgery, internal medicine, and radiology, while other services like prosthetics,
+      acupuncture, and physical therapy fall under the domain of "Service."
+
+  - name: specialty_source_concept_id
+    description: This is often zero as many sites use proprietary codes to store physician
+      speciality.
+
+  - name: gender_source_value
+    description: This is provider's gender as it appears in the source data.
+
+  - name: gender_source_concept_id
+    description: This is often zero as many sites use proprietary codes to store provider
+      gender.
+
+
+- name: specimen
+  description: Auto-generated schema for the specimen table
+  columns:
+  - name: specimen_id
+    description: Unique identifier for each specimen.
+
+  - name: person_id
+    description: The person from whom the specimen is collected.
+
+  - name: specimen_concept_id
+    description: No description provided
+
+  - name: specimen_type_concept_id
+    description: No description provided
+
+  - name: specimen_date
+    description: The date the specimen was collected.
+
+  - name: specimen_datetime
+    description: No description provided
+
+  - name: quantity
+    description: The amount of specimen collected from the person.
+
+  - name: unit_concept_id
+    description: The unit for the quantity of the specimen.
+
+  - name: anatomic_site_concept_id
+    description: This is the site on the body where the specimen is from.
+
+  - name: disease_status_concept_id
+    description: No description provided
+
+  - name: specimen_source_id
+    description: This is the identifier for the specimen from the source system.
+
+  - name: specimen_source_value
+    description: No description provided
+
+  - name: unit_source_value
+    description: No description provided
+
+  - name: anatomic_site_source_value
+    description: No description provided
+
+  - name: disease_status_source_value
+    description: No description provided
+
+
+- name: visit_detail
+  description: Auto-generated schema for the visit_detail table
+  columns:
+  - name: visit_detail_id
+    description: Use this to identify unique interactions between a person and the
+      health care system. This identifier links across the other CDM event tables
+      to associate events with a visit detail.
+
+  - name: person_id
+    description: No description provided
+
+  - name: visit_detail_concept_id
+    description: This field contains a concept id representing the kind of visit detail,
+      like inpatient or outpatient. All concepts in this field should be standard
+      and belong to the Visit domain.
+
+  - name: visit_detail_start_date
+    description: This is the date of the start of the encounter. This may or may not
+      be equal to the date of the Visit the Visit Detail is associated with.
+
+  - name: visit_detail_start_datetime
+    description: No description provided
+
+  - name: visit_detail_end_date
+    description: This the end date of the patient-provider interaction.  If a Person
+      is still an inpatient in the hospital at the time of the data extract and does
+      not have a visit_end_date, then set the visit_end_date to the date of the data
+      pull.
+
+  - name: visit_detail_end_datetime
+    description: If a Person is still an inpatient in the hospital at the time of
+      the data extract and does not have a visit_end_datetime, then set the visit_end_datetime
+      to the datetime of the data pull.
+
+  - name: visit_detail_type_concept_id
+    description: Use this field to understand the provenance of the visit detail record,
+      or where the record comes from.
+
+  - name: provider_id
+    description: There will only be one provider per  **visit** record and the ETL
+      document should clearly state how they were chosen (attending, admitting, etc.).
+      This is a typical reason for leveraging the VISIT_DETAIL table as even though
+      each VISIT_DETAIL record can only have one provider, there is no limit to the
+      number of VISIT_DETAIL records that can be associated to a VISIT_OCCURRENCE
+      record.
+
+  - name: care_site_id
+    description: This field provides information about the Care Site where the Visit
+      Detail took place.
+
+  - name: visit_detail_source_value
+    description: This field houses the verbatim value from the source data representing
+      the kind of visit detail that took place (inpatient, outpatient, emergency,
+      etc.)
+
+  - name: visit_detail_source_concept_id
+    description: No description provided
+
+  - name: admitted_from_concept_id
+    description: Use this field to determine where the patient was admitted from.
+      This concept is part of the visit domain and can indicate if a patient was admitted
+      to the hospital from a long-term care facility, for example.
+
+  - name: admitted_from_source_value
+    description: No description provided
+
+  - name: discharged_to_source_value
+    description: No description provided
+
+  - name: discharged_to_concept_id
+    description: Use this field to determine where the patient was discharged to after
+      a visit. This concept is part of the visit domain and can indicate if a patient
+      was transferred to another hospital or sent to a long-term care facility, for
+      example.  It is assumed that a person is discharged to home therefore there
+      is not a standard concept id for "home".  Use concept id = 0 when a person is
+      discharged to home.
+
+  - name: preceding_visit_detail_id
+    description: Use this field to find the visit detail that occurred for the person
+      prior to the given visit detail record. There could be a few days or a few years
+      in between.
+
+  - name: parent_visit_detail_id
+    description: Use this field to find the visit detail that subsumes the given visit
+      detail record. This is used in the case that a visit detail record needs to
+      be nested beyond the VISIT_OCCURRENCE/VISIT_DETAIL relationship.
+
+  - name: visit_occurrence_id
+    description: Use this field to link the VISIT_DETAIL record to its VISIT_OCCURRENCE.
+
+- name: visit_occurrence
+  description: Auto-generated schema for the visit_occurrence table
+  columns:
+  - name: visit_occurrence_id
+    description: Use this to identify unique interactions between a person and the
+      health care system. This identifier links across the other CDM event tables
+      to associate events with a visit.
+
+  - name: person_id
+    description: No description provided
+
+  - name: visit_concept_id
+    description: This field contains a concept id representing the kind of visit,
+      like inpatient or outpatient. All concepts in this field should be standard
+      and belong to the Visit domain.
+
+  - name: visit_start_date
+    description: For inpatient visits, the start date is typically the admission date.
+      For outpatient visits the start date and end date will be the same.
+
+  - name: visit_start_datetime
+    description: No description provided
+
+  - name: visit_end_date
+    description: For inpatient visits the end date is typically the discharge date.  If
+      a Person is still an inpatient in the hospital at the time of the data extract
+      and does not have a visit_end_date, then set the visit_end_date to the date
+      of the data pull.
+
+  - name: visit_end_datetime
+    description: If a Person is still an inpatient in the hospital at the time of
+      the data extract and does not have a visit_end_datetime, then set the visit_end_datetime
+      to the datetime of the data pull.
+
+  - name: visit_type_concept_id
+    description: Use this field to understand the provenance of the visit record,
+      or where the record comes from.
+
+  - name: provider_id
+    description: There will only be one provider per visit record and the ETL document
+      should clearly state how they were chosen (attending, admitting, etc.). If there
+      are multiple providers associated with a visit in the source, this can be reflected
+      in the event tables (CONDITION_OCCURRENCE, PROCEDURE_OCCURRENCE, etc.) or in
+      the VISIT_DETAIL table.
+
+  - name: care_site_id
+    description: This field provides information about the Care Site where the Visit
+      took place.
+
+  - name: visit_source_value
+    description: This field houses the verbatim value from the source data representing
+      the kind of visit that took place (inpatient, outpatient, emergency, etc.)
+
+  - name: visit_source_concept_id
+    description: No description provided
+
+  - name: admitted_from_concept_id
+    description: Use this field to determine where the patient was admitted from.
+      This concept is part of the visit domain and can indicate if a patient was admitted
+      to the hospital from a long-term care facility, for example.
+
+  - name: admitted_from_source_value
+    description: No description provided
+
+  - name: discharged_to_concept_id
+    description: Use this field to determine where the patient was discharged to after
+      a visit. This concept is part of the visit domain and can indicate if a patient
+      was transferred to another hospital or sent to a long-term care facility, for
+      example.  It is assumed that a person is discharged to home therefore there
+      is not a standard concept id for "home".  Use concept id = 0 when a person is
+      discharged to home.
+
+  - name: discharged_to_source_value
+    description: No description provided
+
+  - name: preceding_visit_occurrence_id
+    description: Use this field to find the visit that occurred for the person prior
+      to the given visit. There could be a few days or a few years in between.
+
