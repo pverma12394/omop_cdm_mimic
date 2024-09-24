@@ -6,3 +6,4 @@ demo_folder/*
 logs/*
 dhr_etl/
 raw_data/
+data/
