@@ -1,6 +1,6 @@
-CREATE SCHEMA IF NOT EXISTS omop_raw;
+CREATE SCHEMA IF NOT EXISTS mimic_iv_ed;
 
-CREATE TABLE IF NOT EXISTS omop_raw.medrecon (
+CREATE TABLE IF NOT EXISTS mimic_iv_ed.medrecon (
     subject_id BIGINT,                 
     stay_id BIGINT,
     charttime TIMESTAMP,
@@ -12,7 +12,7 @@ CREATE TABLE IF NOT EXISTS omop_raw.medrecon (
     etcdescription TEXT
 );
 
-CREATE TABLE IF NOT EXISTS omop_raw.pyxis (
+CREATE TABLE IF NOT EXISTS mimic_iv_ed.pyxis (
     subject_id BIGINT,
     stay_id BIGINT, 
     charttime TIMESTAMP,
@@ -22,7 +22,7 @@ CREATE TABLE IF NOT EXISTS omop_raw.pyxis (
     gsn_rn INTEGER
 );
 
-CREATE TABLE IF NOT EXISTS omop_raw.vitalsign (
+CREATE TABLE IF NOT EXISTS mimic_iv_ed.vitalsign (
     subject_id BIGINT NOT NULL,  
     stay_id BIGINT NOT NULL,
     charttime TIMESTAMP,
@@ -36,7 +36,7 @@ CREATE TABLE IF NOT EXISTS omop_raw.vitalsign (
     pain VARCHAR(255)                  
 );
 
-CREATE TABLE IF NOT EXISTS omop_raw.triage (
+CREATE TABLE IF NOT EXISTS mimic_iv_ed.triage (
     subject_id BIGINT NOT NULL,
     stay_id BIGINT NOT NULL,
     temperature VARCHAR(255),
@@ -51,7 +51,7 @@ CREATE TABLE IF NOT EXISTS omop_raw.triage (
     PRIMARY KEY (subject_id, stay_id)
 );
 
-CREATE TABLE IF NOT EXISTS omop_raw.diagnosis (
+CREATE TABLE IF NOT EXISTS mimic_iv_ed.diagnosis (
     subject_id INTEGER NOT NULL,
     stay_id BIGINT NOT NULL,
     seq_num INTEGER,
@@ -60,7 +60,7 @@ CREATE TABLE IF NOT EXISTS omop_raw.diagnosis (
     icd_title TEXT
 );
 
-CREATE TABLE IF NOT EXISTS omop_raw.edstays (
+CREATE TABLE IF NOT EXISTS mimic_iv_ed.edstays (
     subject_id INTEGER NOT NULL,
     hadm_id INTEGER,
     stay_id BIGINT NOT NULL,

@@ -1,7 +1,11 @@
+{{ config(
+    schema='_harmonised'
+) }}
+
 with edstays as (
     select * from
      {{
-        source('omop_raw', 'edstays')
+        source('mimic_iv_ed', 'edstays')
      }}
 ),
 

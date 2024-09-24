@@ -1,14 +1,18 @@
+{{ config(
+    schema='_harmonised'
+) }}
+
 with medrecon as (
     select * from
      {{
-        source('omop_raw', 'medrecon')
+        source('mimic_iv_ed', 'medrecon')
      }}
 ),
 
 pyxis as (
     select * from
      {{
-        source('omop_raw', 'pyxis')
+        source('mimic_iv_ed', 'pyxis')
      }}
 ),
 

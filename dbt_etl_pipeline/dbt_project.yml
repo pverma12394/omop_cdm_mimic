@@ -34,9 +34,3 @@ models:
     # Config indicated by + and applies to all files under models/example/
     omop_staging:
       +materialized: table
-      +schema: omop_harmonise
-
-seeds:
-  dbt_etl_pipeline:
-    vocabulary:
-      +schema: omop_harmonise

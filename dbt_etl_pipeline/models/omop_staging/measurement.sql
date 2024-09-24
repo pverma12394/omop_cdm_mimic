@@ -1,11 +1,15 @@
+{{ config(
+    schema='_harmonised'
+) }}
+
 with triage as (
     select *
-    from {{ source('omop_raw', 'triage') }}
+    from {{ source('mimic_iv_ed', 'triage') }}
 ),
 
 vitalsign as (
     select *
-    from {{ source('omop_raw', 'vitalsign') }}
+    from {{ source('mimic_iv_ed', 'vitalsign') }}
 ),
 
 measurement as (

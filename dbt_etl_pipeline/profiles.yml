@@ -5,7 +5,7 @@ dbt_etl_pipeline:
       host: localhost
       pass: postgres
       port: 5432
-      schema: omop_raw
+      schema: mimic_iv_ed
       threads: 1
       type: postgres
       user: postgres

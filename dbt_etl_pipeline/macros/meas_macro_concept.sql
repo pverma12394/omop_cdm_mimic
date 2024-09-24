@@ -8,7 +8,7 @@
         NULL as measurement_time,  
         0 as measurement_type_concept_id, 
         NULL as operator_concept_id,  
-        NULL as value_as_number,
+        triage.acuity as value_as_number,
         0 as value_as_concept_id, 
         NULL as unit_concept_id,  
         NULL as range_low, 
@@ -21,7 +21,6 @@
         NULL as unit_source_value,
         NULL as unit_source_concept_id,
         triage.chiefcomplaint as value_source_value,
-        triage.acuity as acuity_source_value, -- Custom OMOP field
         NULL as measurement_event_id,
         NULL as meas_event_field_concept_id
     from 
@@ -57,7 +56,6 @@
         NULL as unit_source_value,
         NULL as unit_source_concept_id,
         NULL as value_source_value,
-        NULL as acuity_source_value, -- Custom OMOP field
         NULL as measurement_event_id,
         NULL as meas_event_field_concept_id
     from 

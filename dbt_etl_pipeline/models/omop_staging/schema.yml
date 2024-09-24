@@ -1,7 +1,7 @@
 version: 2
 
 sources:
-- name: omop_raw
+- name: mimic_iv_ed
   tables:
     - name: triage
     - name: vitalsign
@@ -845,10 +845,6 @@ models:
   - name: value_source_value
     description: This field houses the verbatim result value of the Measurement from
       the source data .
-
-  - name: acuity_source_value
-    description: This field houses the verbatim result value of the Acuity from
-      the Triage source data . This is a CUSTOM Omop field
 
   - name: measurement_event_id
     description: If the Measurement record is related to another record in the database,

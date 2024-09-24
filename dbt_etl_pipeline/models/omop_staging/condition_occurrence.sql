@@ -1,7 +1,11 @@
+{{ config(
+    schema='_harmonised'
+) }}
+
 with diagnosis as (
     select * from
      {{
-        source('omop_raw', 'diagnosis')
+        source('mimic_iv_ed', 'diagnosis')
      }}
 ),
 
