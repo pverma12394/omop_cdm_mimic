@@ -1,5 +1,14 @@
 CREATE SCHEMA IF NOT EXISTS mimic_iv_ed;
 
+CREATE TABLE IF NOT EXISTS mimic_iv_ed.patient (
+    subject_id BIGINT PRIMARY KEY,
+    gender VARCHAR(20),
+    anchor_age INT,
+    anchor_year INT,
+    anchor_year_group VARCHAR(20),
+    dod DATE
+);
+
 CREATE TABLE IF NOT EXISTS mimic_iv_ed.medrecon (
     subject_id BIGINT,                 
     stay_id BIGINT,

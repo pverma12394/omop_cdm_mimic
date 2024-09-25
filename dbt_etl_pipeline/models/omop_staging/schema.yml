@@ -3,12 +3,14 @@ version: 2
 sources:
 - name: mimic_iv_ed
   tables:
+    - name: patients
     - name: triage
     - name: vitalsign
     - name: edstays
     - name: diagnosis
     - name: pyxis
     - name: medrecon
+    - name: source_to_concept_map
 
 models:
 - name: care_site

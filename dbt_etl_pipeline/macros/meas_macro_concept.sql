@@ -7,22 +7,22 @@
         NULL as measurement_datetime,  
         NULL as measurement_time,  
         0 as measurement_type_concept_id, 
-        NULL as operator_concept_id,  
+        0 as operator_concept_id,  
         triage.acuity as value_as_number,
         0 as value_as_concept_id, 
-        NULL as unit_concept_id,  
+        0 as unit_concept_id,  
         NULL as range_low, 
         NULL as range_high,  
         NULL as provider_id,
         triage.stay_id as visit_occurrence_id,
         NULL as visit_detail_id,  
         triage.{{ vital_column }} as measurement_source_value,
-        0 as measurement_source_concept_id,
+        NULL as measurement_source_concept_id,
         NULL as unit_source_value,
         NULL as unit_source_concept_id,
         triage.chiefcomplaint as value_source_value,
         NULL as measurement_event_id,
-        NULL as meas_event_field_concept_id
+        0 as meas_event_field_concept_id
     from 
         triage
 {% endmacro %}
@@ -42,22 +42,22 @@
             ELSE '00:00:00'
         END as measurement_time,
         0 as measurement_type_concept_id,
-        NULL as operator_concept_id,
+        0 as operator_concept_id,
         NULL as value_as_number,
         0 as value_as_concept_id,
-        NULL as unit_concept_id,
+        0 as unit_concept_id,
         NULL as range_low,
         NULL as range_high,
         NULL as provider_id,
         vitalsign.stay_id as visit_occurrence_id,
         NULL as visit_detail_id,
         vitalsign.{{ vital_column }} as measurement_source_value,
-        0 as measurement_source_concept_id,
+        NULL as measurement_source_concept_id,
         NULL as unit_source_value,
         NULL as unit_source_concept_id,
         NULL as value_source_value,
         NULL as measurement_event_id,
-        NULL as meas_event_field_concept_id
+        0 as meas_event_field_concept_id
     from 
         vitalsign
 {% endmacro %}

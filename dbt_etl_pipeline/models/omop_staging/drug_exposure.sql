@@ -16,13 +16,20 @@ pyxis as (
      }}
 ),
 
+source_to_concept_map as (
+    select * from
+     {{
+        source('mimic_iv_ed', 'source_to_concept_map')
+     }}
+),
+
 drug_exposure as (
 
-    -- Select from medrecon
+    -- Select from medrecon with mapping to source_to_concept_map for drug_concept_id
     select 
         NULL as drug_exposure_id,
         medrecon.subject_id as person_id,
-        0 as drug_concept_id,
+        coalesce(stcm.target_concept_id, 0) as drug_concept_id,  -- Mapping drug_concept_id
         date(medrecon.charttime) as drug_exposure_start_date,
         medrecon.charttime as drug_exposure_start_datetime,
         NULL as drug_exposure_end_date,
@@ -43,12 +50,13 @@ drug_exposure as (
         medrecon.gsn as drug_source_concept_id,
         NULL as route_source_value,
         NULL as dose_unit_source_value
-
     from medrecon
+    left join source_to_concept_map stcm 
+        on lower(medrecon.name) = lower(stcm.source_code_description)  -- Joining on name and source_description
 
     union all
 
-    -- Select from pyxis
+    -- Select from pyxis (without mapping to source_to_concept_map)
     select 
         NULL as drug_exposure_id,
         pyxis.subject_id as person_id,
@@ -73,7 +81,6 @@ drug_exposure as (
         pyxis.gsn as drug_source_concept_id,
         NULL as route_source_value,
         NULL as dose_unit_source_value
-
     from pyxis
 )
 
