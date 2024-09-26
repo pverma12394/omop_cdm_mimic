@@ -3,9 +3,9 @@
         NULL as measurement_id,
         triage.subject_id as person_id,
         {{ concept_id }} as measurement_concept_id,
-        NULL as measurement_date,  
-        NULL as measurement_datetime,  
-        NULL as measurement_time,  
+        CAST(NULL AS TEXT) as measurement_date,         -- Casting NULL as DATE in PostgreSQL
+        CAST(NULL AS TEXT) as measurement_datetime, -- Casting NULL as TIMESTAMP in PostgreSQL
+        CAST(NULL AS TEXT) as measurement_time,         -- Casting NULL as TIME
         0 as measurement_type_concept_id, 
         0 as operator_concept_id,  
         triage.acuity as value_as_number,
