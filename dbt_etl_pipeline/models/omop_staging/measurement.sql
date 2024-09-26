@@ -13,37 +13,37 @@ vitalsign as (
 ),
 
 measurement as (
-    {{ map_triage_measurement('temperature', 0) }}
+    {{ map_measurement('triage', 'temperature', 0) }}
     union all
-    {{ map_triage_measurement('heartrate', 0) }}
+    {{ map_measurement('triage', 'heartrate', 0) }}
     union all
-    {{ map_triage_measurement('resprate', 0) }}
+    {{ map_measurement('triage', 'resprate', 0) }}
     union all
-    {{ map_triage_measurement('o2sat', 0) }}
+    {{ map_measurement('triage', 'o2sat', 0) }}
     union all
-    {{ map_triage_measurement('sbp', 0) }}
+    {{ map_measurement('triage', 'sbp', 0) }}
     union all
-    {{ map_triage_measurement('dbp', 0) }}
+    {{ map_measurement('triage', 'dbp', 0) }}
     union all
-    {{ map_triage_measurement('pain', 0) }}
+    {{ map_measurement('triage', 'pain', 0) }}
 
     union all
 
-    {{ map_vitalsign_measurement('temperature', 0) }}
+    {{ map_measurement('vitalsign', 'temperature', 0) }}
     union all
-    {{ map_vitalsign_measurement('heartrate', 0) }}
+    {{ map_measurement('vitalsign', 'heartrate', 0) }}
     union all
-    {{ map_vitalsign_measurement('resprate', 0) }}
+    {{ map_measurement('vitalsign', 'resprate', 0) }}
     union all
-    {{ map_vitalsign_measurement('o2sat', 0) }}
+    {{ map_measurement('vitalsign', 'o2sat', 0) }}
     union all
-    {{ map_vitalsign_measurement('sbp', 0) }}
+    {{ map_measurement('vitalsign', 'sbp', 0) }}
     union all
-    {{ map_vitalsign_measurement('dbp', 0) }}
+    {{ map_measurement('vitalsign', 'dbp', 0) }}
     union all
-    {{ map_vitalsign_measurement('pain', 0) }}
+    {{ map_measurement('vitalsign', 'pain', 0) }}
     union all
-    {{ map_vitalsign_measurement('rhythm', 0) }}
+    {{ map_measurement('vitalsign', 'rhythm', 0) }}
 )
 
 select * from measurement

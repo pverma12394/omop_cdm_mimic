@@ -23,65 +23,61 @@ source_to_concept_map as (
      }}
 ),
 
-drug_exposure as (
-
-    -- Select from medrecon with mapping to source_to_concept_map for drug_concept_id
+combined_data as (
+    -- Combine both medrecon and pyxis with a source identifier
     select 
-        NULL as drug_exposure_id,
+        'medrecon' as source,
         medrecon.subject_id as person_id,
-        coalesce(stcm.target_concept_id, 0) as drug_concept_id,  -- Mapping drug_concept_id
+        coalesce(stcm.target_concept_id, 0) as drug_concept_id,
         date(medrecon.charttime) as drug_exposure_start_date,
         medrecon.charttime as drug_exposure_start_datetime,
         NULL as drug_exposure_end_date,
         NULL as drug_exposure_end_datetime,
         NULL as verbatim_end_date,
         32830 as drug_type_concept_id,
-        NULL as stop_reason,
-        NULL as refills,
-        NULL as quantity,
-        NULL as days_supply,
-        NULL as sig,
-        NULL as route_concept_id,
-        NULL as lot_number,
-        NULL as provider_id,
         medrecon.stay_id as visit_occurrence_id,
-        NULL as visit_detail_id,
         medrecon.name as drug_source_value,
-        medrecon.gsn as drug_source_concept_id,
-        NULL as route_source_value,
-        NULL as dose_unit_source_value
+        medrecon.gsn as drug_source_concept_id
     from medrecon
     left join source_to_concept_map stcm 
-        on lower(medrecon.name) = lower(stcm.source_code_description)  -- Joining on name and source_description
+        on medrecon.gsn = stcm.source_code::INTEGER
 
     union all
 
-    -- Select from pyxis (without mapping to source_to_concept_map)
     select 
-        NULL as drug_exposure_id,
+        'pyxis' as source,
         pyxis.subject_id as person_id,
-        0 as drug_concept_id,
+        coalesce(stcm.target_concept_id, 0) as drug_concept_id,
         date(pyxis.charttime) as drug_exposure_start_date,
         pyxis.charttime as drug_exposure_start_datetime,
         NULL as drug_exposure_end_date,
         NULL as drug_exposure_end_datetime,
         NULL as verbatim_end_date,
         32825 as drug_type_concept_id,
-        NULL as stop_reason,
-        NULL as refills,
-        NULL as quantity,
-        NULL as days_supply,
-        NULL as sig,
-        NULL as route_concept_id,
-        NULL as lot_number,
-        NULL as provider_id,
         pyxis.stay_id as visit_occurrence_id,
-        NULL as visit_detail_id,
         pyxis.name as drug_source_value,
-        pyxis.gsn as drug_source_concept_id,
-        NULL as route_source_value,
-        NULL as dose_unit_source_value
+        pyxis.gsn as drug_source_concept_id
     from pyxis
+    left join source_to_concept_map stcm 
+        on pyxis.gsn = stcm.source_code::INTEGER
+),
+
+-- Generate unique IDs based on row number and total row count from combined data
+drug_exposure as (
+    select 
+        ROW_NUMBER() OVER (ORDER BY source, person_id) + 100000 as drug_exposure_id,
+        person_id,
+        drug_concept_id,
+        drug_exposure_start_date,
+        drug_exposure_start_datetime,
+        drug_exposure_end_date,
+        drug_exposure_end_datetime,
+        verbatim_end_date,
+        drug_type_concept_id,
+        visit_occurrence_id,
+        drug_source_value,
+        drug_source_concept_id
+    from combined_data
 )
 
 select * from drug_exposure

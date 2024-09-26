@@ -11,7 +11,7 @@ with diagnosis as (
 
 condition_occurrence as (
     select 
-        NULL as condition_occurrence_id,
+        ROW_NUMBER() OVER () + 200000 as condition_occurrence_id,
         diagnosis.subject_id as person_id,
         0 as condition_concept_id,
         NULL as condition_start_date,
