@@ -9,11 +9,18 @@ with diagnosis as (
      }}
 ),
 
+source_to_concept_map as (
+    select * from
+     {{
+        source('mimic_iv_ed', 'source_to_concept_map')
+     }}
+),
+
 condition_occurrence as (
     select 
         ROW_NUMBER() OVER () + 200000 as condition_occurrence_id,
         diagnosis.subject_id as person_id,
-        0 as condition_concept_id,
+        coalesce(stcm.target_concept_id, 0) as condition_concept_id,
         NULL as condition_start_date,
         NULL as condition_start_datetime,
         NULL as condition_end_date,
@@ -29,6 +36,8 @@ condition_occurrence as (
         NULL as condition_status_source_value
     from 
         diagnosis
+    left join source_to_concept_map stcm
+        on lower(diagnosis.icd_title) = lower(stcm.source_code_description)
 )
 
 select * from condition_occurrence

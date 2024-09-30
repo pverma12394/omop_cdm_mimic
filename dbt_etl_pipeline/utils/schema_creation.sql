@@ -82,13 +82,13 @@ CREATE TABLE IF NOT EXISTS mimic_iv_ed.edstays (
 );
 
 CREATE TABLE IF NOT EXISTS mimic_iv_ed.source_to_concept_map (
-    source_code varchar(50) NOT NULL,
+    source_code varchar(50) NULL,
     source_concept_id integer NOT NULL,
     source_vocabulary_id varchar(20) NOT NULL,
     source_code_description varchar(255) NULL,
-    target_concept_id integer NOT NULL,
+    target_concept_id varchar(20) NOT NULL,
     target_vocabulary_id varchar(20) NOT NULL,
-    valid_start_date date NOT NULL,
-    valid_end_date date NOT NULL,
+    valid_start_date date NULL,
+    valid_end_date date NULL,
     invalid_reason varchar(1) NULL
 );

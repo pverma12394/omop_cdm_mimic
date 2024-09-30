@@ -24,7 +24,6 @@ source_to_concept_map as (
 ),
 
 combined_data as (
-    -- Combine both medrecon and pyxis with a source identifier
     select 
         'medrecon' as source,
         medrecon.subject_id as person_id,
@@ -62,7 +61,6 @@ combined_data as (
         on pyxis.gsn = stcm.source_code::INTEGER
 ),
 
--- Generate unique IDs based on row number and total row count from combined data
 drug_exposure as (
     select 
         ROW_NUMBER() OVER (ORDER BY source, person_id) + 100000 as drug_exposure_id,

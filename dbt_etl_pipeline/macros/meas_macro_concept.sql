@@ -1,9 +1,13 @@
-{% macro map_measurement(source, vital_column, concept_id) %}
+
+{% macro map_measurement(source, vital_column, concept_id, source_to_concept_map) %}
     select
-        -- Generate measurement_id by adding a random integer to subject_id
-        {{ source }}.subject_id + {{ source }}.stay_id + (floor(random() * 100000000000)) as measurement_id,  -- Adjust the random number range as needed
+        {{ source }}.subject_id + {{ source }}.stay_id + (floor(random() * 100000000000)) as measurement_id,
         {{ source }}.subject_id as person_id,
-        {{ concept_id }} as measurement_concept_id,
+        {% if vital_column == 'rhythm' %}
+            stcm.target_concept_id as measurement_concept_id,
+        {% else %}
+            {{ concept_id }} as measurement_concept_id,
+        {% endif %}
 
         {% if source == 'vitalsign' %}
             CAST(date({{ source }}.charttime) AS TEXT) as measurement_date,
@@ -13,7 +17,6 @@
                     LPAD(CAST(EXTRACT(HOUR FROM {{ source }}.charttime) AS TEXT), 2, '0') || ':' ||
                     LPAD(CAST(EXTRACT(MINUTE FROM {{ source }}.charttime) AS TEXT), 2, '0') || ':' ||
                     LPAD(CAST(EXTRACT(SECOND FROM {{ source }}.charttime) AS TEXT), 2, '0')
-                ELSE '00:00:00'
             END as measurement_time,
         {% else %}
             CAST(NULL AS TEXT) as measurement_date,
@@ -21,7 +24,12 @@
             CAST(NULL AS TEXT) as measurement_time,
         {% endif %}
 
-        0 as measurement_type_concept_id,
+        {% if source == 'vitalsign' %}
+            32832 as measurement_type_concept_id,
+        {% else %}
+            32826 as measurement_type_concept_id,
+        {% endif %}
+
         0 as operator_concept_id,
 
         {% if source == 'triage' %}
@@ -53,4 +61,9 @@
         0 as meas_event_field_concept_id
     from 
         {{ source }}
+    {% if source == 'vitalsign' %}
+        left join source_to_concept_map stcm
+            on lower({{source}}.rhythm) = lower(stcm.source_code_description)
+     {% endif %}
+
 {% endmacro %}
