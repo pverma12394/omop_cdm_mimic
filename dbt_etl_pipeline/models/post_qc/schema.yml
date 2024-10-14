@@ -1,0 +1,17 @@
+version: 2
+
+sources:
+- name: mimic_iv_ed__harmonised
+  tables:
+    - name: condition_occurrence
+
+models:
+  - name: condition_concept_coverage
+    description: "Calculates the percentage of valid Condition Concept IDs in the condition_occurrence table."
+    columns:
+      - name: total_conditions
+        description: "The total number of rows in the condition_occurrence table."
+      - name: valid_conditions
+        description: "The number of rows with a valid condition_concept_id."
+      - name: concept_mapping_accuracy
+        description: "The mapping accuracy based on thresholds."
