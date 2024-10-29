@@ -31,9 +31,5 @@ clean-targets:         # directories to be removed by `dbt clean`
 # files using the `{{ config(...) }}` macro.
 models:
   dbt_etl_pipeline:
-    pre_qc:
-      +materialized: table
-    omop_staging:
-      +materialized: table
-    post_qc:
+    wsi:
       +materialized: table

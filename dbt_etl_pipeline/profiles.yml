@@ -1,11 +1,11 @@
 dbt_etl_pipeline:
   outputs:
     dev:
-      dbname: etl_test
+      dbname: wsi_svs
       host: localhost
       pass: postgres
       port: 5432
-      schema: mimic_iv_ed
+      schema: raw_wsi_metadata
       threads: 1
       type: postgres
       user: postgres
