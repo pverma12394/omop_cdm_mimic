@@ -4,9 +4,255 @@ sources:
 - name: raw_wsi_metadata
   tables:
     - name: svs_metadata
+    - name: dataset_metadata
     - name: source_to_concept_map
 
 models:
+  - name: person
+    description: "Table containing demographic information about each person in the database."
+    columns:
+      - name: person_id
+        description: "A unique identifier for each person."
+        tests:
+          - not_null
+          - unique
+
+      - name: gender_concept_id
+        description: "Concept ID representing the gender of the person."
+
+      - name: year_of_birth
+        description: "Year the person was born."
+
+      - name: month_of_birth
+        description: "Month the person was born."
+
+      - name: day_of_birth
+        description: "Day the person was born."
+
+      - name: birth_datetime
+        description: "Exact date and time of birth for the person."
+
+      - name: race_concept_id
+        description: "Concept ID representing the race of the person."
+
+      - name: race_source_value
+        description: "Source value representing the race of the person."
+
+      - name: ethnicity_concept_id
+        description: "Concept ID representing the ethnicity of the person."
+
+      - name: ethnicity_source_value
+        description: "Source value representing the ethnicity of the person."
+
+      - name: location_id
+        description: "Foreign key to the location where the person resides."
+
+      - name: provider_id
+        description: "Primary care provider assigned to the person."
+
+      - name: care_site_id
+        description: "Foreign key to the care site where the person receives primary care."
+
+      - name: person_source_value
+        description: "An external identifier for the person, from the source data."
+    
+  - name: care_site
+    description: "Table containing information about care sites (e.g., hospitals, clinics) within the healthcare system."
+    columns:
+      - name: care_site_id
+        description: "A unique identifier for each care site."
+        tests:
+          - not_null
+          - unique
+
+      - name: care_site_name
+        description: "Name of the care site."
+      
+      - name: place_of_service_concept_id
+        description: "Concept ID representing the type of place of service at the care site."
+
+      - name: location_id
+        description: "Foreign key to the location of the care site."
+  
+      - name: care_site_source_value
+        description: "An external identifier for the care site, from the source data."
+      
+      - name: place_of_service_source_value
+        description: "Place of service of the care_site as it appears in the source data."
+
+  - name: condition_occurrence
+    description: "Table containing data about medical conditions (diagnoses) associated with persons in the database."
+    columns:
+      - name: condition_occurrence_id
+        description: "A unique identifier for each condition record for a person. Refer to the ETL process for handling of duplicate conditions within the same visit."
+        tests:
+          - not_null
+          - unique
+
+      - name: person_id
+        description: "Foreign key to the person for whom the condition is recorded."
+
+      - name: condition_concept_id
+        description: "The standard concept ID representing the condition, mapped from the source value. Recommended for use in analyses and network studies."
+
+      - name: condition_start_date
+        description: "Date representing the start of the condition."
+      
+      - name: condition_start_datetime
+        description: "Date and time representing the start of the condition. Set to midnight (00:00:0000) if not specified."
+
+      - name: condition_end_date
+        description: "Date representing the end of the condition. Use the same date as CONDITION_START_DATE if only one date is available in the source data."
+
+      - name: condition_end_datetime
+        description: "Date and time representing the end of the condition. Set to midnight (00:00:0000) if not specified."
+
+      - name: condition_type_concept_id
+        description: "Concept ID representing the provenance of the condition (e.g., from EHR, claims, registry)."
+
+      - name: condition_status_concept_id
+        description: "Concept representing the status of the condition (e.g., admitting diagnosis, final diagnosis, exclusionary diagnosis)."
+
+      - name: stop_reason
+        description: "Reason the condition is no longer valid, as specified in the source data. If not available, this field may be left blank."
+        data_type: varchar(20)
+
+      - name: provider_id
+        description: "Foreign key to the provider associated with the condition record (e.g., diagnosing provider)."
+
+      - name: visit_occurrence_id
+        description: "Foreign key to the visit during which the condition occurred. This may need to be inferred based on dates in the source data."
+
+      - name: visit_detail_id
+        description: "Foreign key to the visit detail during which the condition occurred (e.g., ICU stay)."
+
+      - name: condition_source_value
+        description: "Original source value representing the condition (e.g., ICD10 or Read code)."
+
+      - name: condition_source_concept_id
+        description: "Concept ID representing the source value of the condition. Generally not recommended for analysis unless Standard Concepts are inadequate."
+
+      - name: condition_status_source_value
+        description: "Original source value representing the condition status, indicating timing or type of diagnosis (e.g., admitting or preliminary diagnosis)."
+
+  - name: procedure_occurrence
+    description: "Table containing data about procedures associated with persons in the database."
+    columns:
+      - name: procedure_occurrence_id
+        description: "The unique key given to a procedure record for a person. Each instance of a procedure occurrence in the source data should be assigned this unique key. Duplicate procedures during the same visit can be kept with individual PROCEDURE_OCCURRENCE_IDs as per ETL logic."
+
+      - name: person_id
+        description: "The PERSON_ID of the PERSON for whom the procedure is recorded. This may be a system-generated code."
+
+      - name: procedure_concept_id
+        description: "The standard concept mapped from the source value representing a procedure. This field is recommended for primary use in analyses and network studies."
+
+      - name: procedure_date
+        description: "The date the procedure started. It is meant to be the start date of the procedure."
+
+      - name: procedure_datetime
+        description: "If the procedure has a start time in the source data, this field houses that information."
+
+      - name: procedure_end_date
+        description: "The date the procedure ended. For most cases, this will be the same as the procedure start date."
+
+      - name: procedure_end_datetime
+        description: "The datetime that the procedure ended, often used in conjunction with procedure_start_datetime to determine the length of the procedure."
+
+      - name: procedure_type_concept_id
+        description: "Concept ID representing the provenance of the Procedure record, such as EHR, insurance claim, or registry."
+
+      - name: modifier_concept_id
+        description: "Modifier concepts providing additional information about the procedure, typically distinguished by 'Modifier' concept classes."
+
+      - name: quantity
+        description: "Indicates the quantity of the procedure. If omitted, a single procedure is assumed. If quantity is '0' in the source, this should default to '1' in the ETL."
+
+      - name: provider_id
+        description: "The provider associated with the procedure record, for example, the provider who performed the procedure."
+
+      - name: visit_occurrence_id
+        description: "The visit during which the procedure occurred. May be inferred based on dates if not explicitly provided."
+
+      - name: visit_detail_id
+        description: "The VISIT_DETAIL record during which the procedure occurred, for example, an ICU stay within an overall hospital visit."
+
+      - name: procedure_source_value
+        description: "The verbatim source value representing the procedure, such as a CPT4 or OPCS4 code."
+
+      - name: procedure_source_concept_id
+        description: "Concept ID representing the procedure source value, not necessarily a standard concept. Use in analyses is discouraged."
+
+      - name: modifier_source_value
+        description: "The verbatim source value representing the modifier code for the procedure, mapped to a MODIFIER_CONCEPT_ID."
+
+  - name: observation
+    description: "Table containing observation records associated with persons in the database."
+    columns:
+      - name: observation_id
+        description: "The unique key given to an observation record for a person. Each instance of an observation present in the source data should be assigned this unique key."
+
+      - name: person_id
+        description: "The PERSON_ID of the person for whom the observation is recorded. This may be a system-generated code."
+
+      - name: observation_concept_id
+        description: "The standard concept mapped from the source value representing the observation. Recommended for primary use in analyses."
+
+      - name: observation_date
+        description: "The date when the observation was obtained, which could represent various observation types, such as lab tests or patient family history."
+
+      - name: observation_datetime
+        description: "If no time is given, this is set to midnight (00:00:00)."
+
+      - name: observation_type_concept_id
+        description: "Concept ID used to determine the provenance of the observation, such as EHR, insurance claim, or registry."
+
+      - name: value_as_number
+        description: "The numerical value of the observation result, if applicable and available."
+
+      - name: value_as_string
+        description: "The categorical value of the observation result, if applicable and available."
+
+      - name: value_as_concept_id
+        description: "The concept ID representing the categorical result of the observation if applicable. This can represent a specific clinical detail derived from a source concept."
+
+      - name: qualifier_concept_id
+        description: "Concept ID for any attributes specifying additional details about the observation, such as degrees or severities."
+
+      - name: unit_concept_id
+        description: "Concept ID representing the unit of measurement for the observation, mapped from the source unit."
+
+      - name: provider_id
+        description: "The provider associated with the observation record, such as the provider who ordered the test or recorded the result."
+
+      - name: visit_occurrence_id
+        description: "The visit during which the observation occurred. This may need to be determined based on dates in the source data."
+
+      - name: visit_detail_id
+        description: "The VISIT_DETAIL record during which the observation occurred, such as an ICU stay within an overall hospital visit."
+
+      - name: observation_source_value
+        description: "The verbatim source value representing the observation, such as an ICD10 or Read code."
+
+      - name: observation_source_concept_id
+        description: "The concept ID representing the observation source value, which may not necessarily be a standard concept."
+
+      - name: unit_source_value
+        description: "The verbatim source value representing the unit of measurement for the observation."
+
+      - name: qualifier_source_value
+        description: "The verbatim source value representing the qualifier of the observation, such as an indicator of severity."
+
+      - name: value_source_value
+        description: "The verbatim result value of the observation from the source data. This field captures the observation result if the observation itself requires a result."
+
+      - name: observation_event_id
+        description: "If the observation is related to another record, this field is the primary key of the linked record."
+
+      - name: obs_event_field_concept_id
+        description: "The concept ID that identifies the table and field from which the observation_event_id originated."
+  
+  
   - name: image_occurrence
     description: "Table representing image occurrences in the Common Data Model (CDM)."
     columns:
@@ -15,8 +261,8 @@ models:
         data_type: varchar(50)
         tests:
           - not_null
-      - name: image_id
-        description: "This field represents the image ID in SVS file"
+      - name: visit_detail_id
+        description: "The Visit Detail during which the device was prescribed or given."
         data_type: integer
       - name: person_id
         description: "This field represents the unique identifier for the patient associated with the image."
@@ -45,9 +291,9 @@ models:
         data_type: varchar(50)
         tests:
           - not_null
-      - name: image_id
-        description: "This field represents the unique identifier for each image."
-        data_type: varchar(50)
+      - name: visit_detail_id
+        description: "The Visit Detail during which the device was prescribed or given."
+        data_type: integer
       - name: feature_type
         description: "This field represents the type of extracted feature (e.g., shape, texture, intensity)."
         data_type: varchar(50)

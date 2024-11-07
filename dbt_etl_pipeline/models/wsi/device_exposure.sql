@@ -22,7 +22,7 @@ device_exposure as (
         md5(concat(row_number() over(), svs_metadata.svs_id::text)) as device_exposure_id,
         
         -- Person and device information
-        NULL as person_id,
+        concat('100', svs_metadata.svs_id::text) as person_id,
         0 as device_concept_id,
 
         -- Format the start date in `YYYY-MM-DD`
