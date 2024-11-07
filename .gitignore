@@ -8,3 +8,4 @@ dhr_etl/
 raw_data/
 data/
 qc_new/
+dbt_etl_pipeline/seeds/
